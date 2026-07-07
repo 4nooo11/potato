@@ -65,7 +65,7 @@
         <h2>🎪 축제 입장 인증</h2>
         <p style="color: #666; font-size: 14px;">학번과 이름을 입력해 주세요.</p>
         <input type="number" id="studentId" placeholder="학번 (예: 10101)">
-        <input type="text" id="studentName" placeholder="이름 (예: 김건우)">
+        <input type="text" id="studentName" placeholder="이름 (예: 신어진)">
         <button class="login-btn" onclick="checkAccess()">입장하기</button>
     </div>
 </div>
@@ -84,11 +84,12 @@
         </div>
         <div class="info-panel timetable">
             <h3>⏰ 행사 일정표</h3>
-            <p><strong>09:00 - 10:00</strong> 대강당 개막식 및 동아리 홍보 영상 시청</p>
-            <p><strong>10:00 - 12:00</strong> 오전 부스 운영 및 체험 (1차)</p>
-            <p><strong>12:00 - 13:00</strong> 점심시간 및 자유 시간</p>
-            <p><strong>13:00 - 15:00</strong> 오후 부스 운영 및 스탬프 투어 (2차)</p>
-            <p><strong>15:00 - 16:00</strong> 본부석 이벤트 상품 수령 및 폐막</p>
+            <p><strong>08:30 - 09:00 (30')</strong> 조회, 부스 이동, 준비</p>
+            <p><strong>09:00 - 10:40 (100')</strong> 부스 운영 1타임</p>
+            <p><strong>10:40 - 12:20 (100')</strong> 부스 운영 2타임</p>
+            <p><strong>13:30 - 15:00 (90')</strong> 부스 운영 3타임 (정리 포함)</p>
+            <p><strong>15:00 - 16:00 (60')</strong> 동아리 박람회 골든벨</p>
+            <p><strong>16:00 - 16:30 (30')</strong> 교실 이동, 정리, 종례</p>
         </div>
     </div>
 
@@ -160,9 +161,9 @@
 <script>
     // 💡 [관리자 명단 데이터] 입장 가능한 명단 데이터베이스 대조군
     const allowedStudents = {
-        "10101": "김건우",
-        "10102": "홍길동",
-        "20315": "박상원"
+        "10101": "신어진",
+        "10102": "이서진",
+        "20315": "김수인"
     };
 
     window.onload = function() {
