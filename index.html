@@ -2,80 +2,311 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>동아리 박람회</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 박람회 종합 안내</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #f4f4f9; padding: 20px; }
-        .page { display: none; background: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 400px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .active { display: block; }
-        .menu-btn { display: block; width: 100%; padding: 20px; margin: 10px 0; border-radius: 15px; border: none; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 18px; cursor: pointer; }
-        .booth-item { border-bottom: 1px solid #eee; padding: 15px; cursor: pointer; text-align: left; }
-        .back-btn { margin-top: 20px; padding: 10px; background: #333; color: white; border-radius: 5px; cursor: pointer; }
-        .star-btn { padding: 10px; border-radius: 5px; border: 1px solid #ffd700; background: #fff8e1; cursor: pointer; }
+        /* 기본 스타일 */
+        body { font-family: 'Arial', sans-serif; background: #f5f7fb; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        h1, h2, h3 { margin-top: 0; color: #2c3e50; }
+        hr { border: 0; height: 1px; background: #ddd; margin: 25px 0; }
+
+        /* 🔐 로그인 모달 팝업 (가장 중요: 로그인 전까지 화면을 막음) */
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(78, 115, 223, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { background: white; padding: 30px; border-radius: 15px; width: 85%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .login-btn { width: 100%; padding: 12px; background: #4e73df; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+
+        /* 상단 유저 정보 바 */
+        .user-bar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* 🗺️ 중단 레이아웃 (좌 지도 / 우 일정) */
+        .top-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        @media (max-width: 768px) { .top-section { grid-template-columns: 1fr; } } /* 모바일에서는 위아래로 배치 */
+        
+        .info-panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .map-img { width: 100%; border-radius: 8px; border: 1px solid #eee; display: block; }
+        .timetable p { padding: 8px 0; border-bottom: 1px dashed #eee; margin: 0; }
+
+        /* 🎪 하단 부스 섹션 */
+        .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .add-btn { background: #4e73df; color: white; border: none; width: 40px; height: 40px; border-radius: 5px; cursor: pointer; font-size: 24px; font-weight: bold; }
+        
+        .booth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        .booth-card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; cursor: pointer; transition: 0.2s; }
+        .booth-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+        .booth-card h3 { margin-bottom: 5px; padding-right: 30px; font-size: 18px; }
+        .booth-card p { margin: 5px 0; color: #666; font-size: 14px; }
+        .booth-card .loc { color: #4e73df; font-weight: bold; font-size: 13px; }
+        
+        /* ⭐ 즐겨찾기 버튼 */
+        .fav-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: #ccc; padding: 0; }
+        .fav-btn.active { color: #f1c40f; }
+
+        /* 👤 마이페이지 & 스탬프 빙고 구역 */
+        .mypage-panel { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 25px; }
+        .bingo-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 320px; margin: 20px auto; }
+        .cell { width: 100px; height: 100px; background: #f8f9fa; border: 2px solid #e2e8f0; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; position: relative; cursor: pointer; box-sizing: border-box; text-align: center; padding: 5px; }
+        .cell.checked { background: #ffde59; border-color: #ffbd59; color: #333; }
+        .cell.checked::after { content: '✔️'; position: absolute; bottom: 5px; font-size: 14px; }
+        .submit-btn { background: #2ecc71; color: white; border: none; padding: 14px; font-size: 16px; border-radius: 8px; cursor: pointer; width: 100%; max-width: 320px; margin: 10px auto; display: block; font-weight: bold; }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* 일반 모달 팝업 디자인 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 400px; position: relative; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #aaa; }
     </style>
 </head>
 <body>
 
-    <div id="main-menu" class="page active">
-        <h1>동아리 박람회</h1>
-        <button class="menu-btn" onclick="showPage('booth-list')">부스 안내</button>
-        <button class="menu-btn" onclick="showPage('map')">지도</button>
-        <button class="menu-btn" onclick="showPage('stamp')">스탬프/빙고</button>
-        <button class="menu-btn" onclick="showPage('my')" onclick="loadFavorites()">마이페이지</button>
+<div id="loginGate" class="login-overlay">
+    <div class="login-box">
+        <h2>🎪 축제 입장 인증</h2>
+        <p style="color: #666; font-size: 14px;">학번과 이름을 입력해 주세요.</p>
+        <input type="number" id="studentId" placeholder="학번 (예: 10101)">
+        <input type="text" id="studentName" placeholder="이름 (예: 김건우)">
+        <button class="login-btn" onclick="checkAccess()">입장하기</button>
+    </div>
+</div>
+
+<div class="container">
+    
+    <div class="user-bar">
+        <h2 style="margin:0; font-size: 20px;">🏫 동아리 박람회 메인 정보</h2>
+        <div id="userInfo" style="font-weight: bold; color: #4e73df;">로그인 정보 없음</div>
     </div>
 
-    <div id="booth-list" class="page">
-        <h1>부스 안내</h1>
-        <div class="booth-item" onclick="showPage('booth-1')">🤖 로봇 동아리</div>
-        <div class="booth-item" onclick="showPage('booth-2')">🍳 요리 동아리</div>
-        <div class="back-btn" onclick="showPage('main-menu')">메인으로</div>
+    <div class="top-section">
+        <div class="info-panel">
+            <h3>🗺️ 안내 지도</h3>
+            <img class="map-img" src="https://via.placeholder.com/500x350?text=School+Map+Image" alt="학교 지도">
+        </div>
+        <div class="info-panel timetable">
+            <h3>⏰ 행사 일정표</h3>
+            <p><strong>09:00 - 10:00</strong> 대강당 개막식 및 동아리 홍보 영상 시청</p>
+            <p><strong>10:00 - 12:00</strong> 오전 부스 운영 및 체험 (1차)</p>
+            <p><strong>12:00 - 13:00</strong> 점심시간 및 자유 시간</p>
+            <p><strong>13:00 - 15:00</strong> 오후 부스 운영 및 스탬프 투어 (2차)</p>
+            <p><strong>15:00 - 16:00</strong> 본부석 이벤트 상품 수령 및 폐막</p>
+        </div>
     </div>
 
-    <div id="booth-1" class="page">
-        <h1>로봇 동아리</h1>
-        <p>설명: 드론 조종 및 로봇 제작 체험</p>
-        <button class="star-btn" onclick="toggleFavorite('로봇 동아리')">⭐ 즐겨찾기 토글</button>
-        <div class="back-btn" onclick="showPage('booth-list')">목록으로</div>
+    <hr>
+
+    <div class="section-title">
+        <h2>🎪 동아리 부스 안내</h2>
+        <button class="add-btn" onclick="openModal('addModal')">+</button>
+    </div>
+    
+    <div class="booth-grid" id="boothContainer">
+        <div class="booth-card" onclick="showDetail('로봇공학반', '드론 장애물 조종 경기와 미니 로봇 축구 게임을 직접 체험해 볼 수 있는 부스입니다! 선착순 기념품 증정!', '2층 2-3교실')">
+            <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
+            <h3>로봇공학반</h3>
+            <p>🤖 로봇 축구 & 드론 체험</p>
+            <span class="loc">📍 2층 2-3교실</span>
+        </div>
+        <div class="booth-card" onclick="showDetail('실험과학반', '화려한 불꽃 반응 실험과 코끼리 치약 만들기 실험을 눈앞에서 실시간으로 관람하세요.', '과학실 1')">
+            <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
+            <h3>실험과학반</h3>
+            <p>🧪 흥미진진한 과학 실험</p>
+            <span class="loc">📍 과학실 1</span>
+        </div>
     </div>
 
-    <div id="booth-2" class="page">
-        <h1>요리 동아리</h1>
-        <p>설명: 맛있는 디저트 만들기</p>
-        <button class="star-btn" onclick="toggleFavorite('요리 동아리')">⭐ 즐겨찾기 토글</button>
-        <div class="back-btn" onclick="showPage('booth-list')">목록으로</div>
+    <hr>
+
+    <div class="mypage-panel">
+        <h2 style="text-align: center;">👤 마이페이지 & 스탬프 투어</h2>
+        <p style="text-align: center; color: #666; font-size: 14px;">각 부스에 배치된 QR코드를 스캔하면 스탬프가 자동으로 찍힙니다!</p>
+        
+        <div class="bingo-board" id="bingoBoard">
+            <div class="cell" id="b1" onclick="toggleStamp('b1')">로봇반</div>
+            <div class="cell" id="b2" onclick="toggleStamp('b2')">과학반</div>
+            <div class="cell" id="b3" onclick="toggleStamp('b3')">밴드부</div>
+            <div class="cell" id="b4" onclick="toggleStamp('b4')">댄스부</div>
+            <div class="cell" id="b5" onclick="toggleStamp('b5')">미술반</div>
+            <div class="cell" id="b6" onclick="toggleStamp('b6')">컴퓨터반</div>
+            <div class="cell" id="b7" onclick="toggleStamp('b7')">농구부</div>
+            <div class="cell" id="b8" onclick="toggleStamp('b8')">연극부</div>
+            <div class="cell" id="b9" onclick="toggleStamp('b9')">도서반</div>
+        </div>
+        <button class="submit-btn" id="submitBingo" disabled onclick="submitPrize()">🎁 상품 신청하기 (3줄 빙고 필요)</button>
     </div>
 
-    <div id="my" class="page">
-        <h1>마이페이지</h1>
-        <ul id="fav-list"></ul>
-        <div class="back-btn" onclick="showPage('main-menu')">메인으로</div>
+</div>
+
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('addModal')">&times;</span>
+        <h3>➕ 새 부스 추가하기</h3>
+        <input type="text" id="newTitle" placeholder="부스 이름 (예: 컴퓨터반)">
+        <input type="text" id="newShort" placeholder="간단한 한 줄 설명">
+        <input type="text" id="newLocation" placeholder="위치 (예: 3층 멀티미디어실)">
+        <textarea id="newLong" placeholder="클릭 시 나타날 상세 정보 설명" style="width:100%; height:80px; margin: 10px 0; border:1px solid #ddd; border-radius:8px; padding:10px; box-sizing:border-box; font-size:16px;"></textarea>
+        <button class="login-btn" onclick="addNewBooth()">부스 등록하기</button>
     </div>
+</div>
 
-    <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            if(pageId === 'my') loadFavorites();
-        }
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
+        <h3 id="detailTitle">부스 이름</h3>
+        <p id="detailDesc" style="margin: 20px 0; line-height: 1.6; color: #555;"></p>
+        <p style="color: #4e73df; font-weight: bold; margin: 0;"><span id="detailLoc"></span></p>
+    </div>
+</div>
 
-        // 즐겨찾기 기능
-        function toggleFavorite(boothName) {
-            let favs = JSON.parse(localStorage.getItem('favs') || '[]');
-            if (favs.includes(boothName)) {
-                favs = favs.filter(item => item !== boothName);
-                alert(boothName + " 즐겨찾기 해제!");
-            } else {
-                favs.push(boothName);
-                alert(boothName + " 즐겨찾기 추가!");
+<script>
+    // 💡 [관리자 명단 데이터] 입장 가능한 명단 데이터베이스 대조군
+    const allowedStudents = {
+        "10101": "김건우",
+        "10102": "홍길동",
+        "20315": "박상원"
+    };
+
+    window.onload = function() {
+        // [QR 스캔 감지 로직] 주소 뒤에 ?scan=b1 등이 붙어서 올 경우 처리
+        const urlParams = new URLSearchParams(window.location.search);
+        const scanId = urlParams.get('scan');
+        if (scanId) {
+            let savedStamps = JSON.parse(localStorage.getItem('myStamps') || '[]');
+            if(!savedStamps.includes(scanId)) {
+                savedStamps.push(scanId);
+                localStorage.setItem('myStamps', JSON.stringify(savedStamps));
+                alert("스탬프가 성공적으로 적립되었습니다!");
             }
-            localStorage.setItem('favs', JSON.stringify(favs));
+            window.history.replaceState({}, document.title, window.location.pathname); // 주소창 청소
         }
 
-        // 마이페이지 목록 불러오기
-        function loadFavorites() {
-            const list = document.getElementById('fav-list');
-            const favs = JSON.parse(localStorage.getItem('favs') || '[]');
-            list.innerHTML = favs.map(item => `<li>${item}</li>`).join('');
+        // 로그인 여부 확인
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            openMainPage();
         }
-    </script>
+    }
+
+    // 로그인 검증
+    function checkAccess() {
+        const id = document.getElementById('studentId').value.trim();
+        const name = document.getElementById('studentName').value.trim();
+        
+        if (allowedStudents[id] && allowedStudents[id] === name) {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('studentId', id);
+            localStorage.setItem('studentName', name);
+            alert(`${name}님, 인증되었습니다!`);
+            openMainPage();
+        } else {
+            alert("정보가 유효하지 않습니다. 관리자가 입력해둔 학번과 이름을 확인하세요.");
+        }
+    }
+
+    function openMainPage() {
+        document.getElementById('loginGate').style.display = 'none'; // 로그인 창 닫기
+        document.getElementById('userInfo').innerText = `학번: ${localStorage.getItem('studentId')} | 이름: ${localStorage.getItem('studentName')}`;
+        loadSavedStamps();
+    }
+
+    // 모달 팝업 유틸리티
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    // 부스 상세설명 팝업 띄우기
+    function showDetail(title, desc, loc) {
+        document.getElementById('detailTitle').innerText = title;
+        document.getElementById('detailDesc').innerText = desc || '상세 내용 준비 중입니다.';
+        document.getElementById('detailLoc').innerText = `📍 위치: ${loc}`;
+        openModal('detailModal');
+    }
+
+    // ⭐ 즐겨찾기 토글 기능
+    function toggleFavorite(event, button) {
+        event.stopPropagation(); // 부스 카드 클릭 이벤트가 중복 실행되는 것 방지
+        button.classList.toggle('active');
+        if(button.classList.contains('active')) {
+            button.innerText = '★';
+        } else {
+            button.innerText = '☆';
+        }
+    }
+
+    // ➕ 관리자가 화면 상에서 직접 부스 추가하는 기능
+    function addNewBooth() {
+        const title = document.getElementById('newTitle').value.trim();
+        const short = document.getElementById('newShort').value.trim();
+        const loc = document.getElementById('newLocation').value.trim();
+        const long = document.getElementById('newLong').value.trim();
+
+        if(!title || !loc) return alert('부스 이름과 위치는 필수 항목입니다!');
+
+        const card = document.createElement('div');
+        card.className = 'booth-card';
+        card.onclick = () => showDetail(title, long, loc);
+        card.innerHTML = `
+            <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
+            <h3>${title}</h3>
+            <p>${short || '즐거운 축제 부스'}</p>
+            <span class="loc">📍 ${loc}</span>
+        `;
+        
+        document.getElementById('boothContainer').appendChild(card);
+        closeModal('addModal');
+
+        // 입력 폼 청소
+        document.getElementById('newTitle').value = '';
+        document.getElementById('newShort').value = '';
+        document.getElementById('newLocation').value = '';
+        document.getElementById('newLong').value = '';
+    }
+
+    // 🎯 스탬프 상태 저장 및 로드 / 빙고 판별
+    function toggleStamp(id) {
+        document.getElementById(id).classList.toggle('checked');
+        const checkedIds = Array.from(document.querySelectorAll('.cell.checked')).map(el => el.id);
+        localStorage.setItem('myStamps', JSON.stringify(checkedIds));
+        checkBingo();
+    }
+
+    function loadSavedStamps() {
+        const savedStamps = JSON.parse(localStorage.getItem('myStamps') || '[]');
+        savedStamps.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.classList.add('checked');
+        });
+        checkBingo();
+    }
+
+    function checkBingo() {
+        const cells = Array.from(document.querySelectorAll('.cell')).map(c => c.classList.contains('checked'));
+        let lines = 0;
+        
+        // 가로줄 체크
+        if (cells[0] && cells[1] && cells[2]) lines++;
+        if (cells[3] && cells[4] && cells[5]) lines++;
+        if (cells[6] && cells[7] && cells[8]) lines++;
+        // 세로줄 체크
+        if (cells[0] && cells[3] && cells[6]) lines++;
+        if (cells[1] && cells[4] && cells[7]) lines++;
+        if (cells[2] && cells[5] && cells[8]) lines++;
+        // 대각선 체크
+        if (cells[0] && cells[4] && cells[8]) lines++;
+        if (cells[2] && cells[4] && cells[6]) lines++;
+
+        const btn = document.getElementById('submitBingo');
+        if (lines >= 3) {
+            btn.removeAttribute('disabled');
+            btn.innerText = "🎁 상품 신청하기! (달성 완료)";
+        } else {
+            btn.setAttribute('disabled', 'true');
+            btn.innerText = `🎁 상품 신청하기 (${lines}/3 줄 완성)`;
+        }
+    }
+
+    function submitPrize() {
+        const name = localStorage.getItem('studentName');
+        const id = localStorage.getItem('studentId');
+        alert(`[제출 성공]\n학번: ${id}\n이름: ${name}\n3줄 빙고가 본부 컴퓨터로 전송되었습니다! 보상을 수령하세요.`);
+    }
+</script>
 </body>
 </html>
