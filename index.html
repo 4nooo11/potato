@@ -6,14 +6,16 @@
     <title>🎪 동아리 박람회 종합 안내</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        /* 🎨 축제 분위기의 세련된 배경 및 테마 정의 */
+        /* 🎨 따뜻하고 화사한 파스텔톤 축제 테마 정의 */
         :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --accent-color: #ff007f;
-            --bg-gradient: linear-gradient(135deg, #f5f7fb 0%, #e4ecfa 100%);
-            --card-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            --hover-shadow: 0 12px 28px rgba(108, 92, 231, 0.15);
+            --primary-color: #7d73e6;       /* 부드러운 라벤더 퍼플 */
+            --secondary-color: #efbbcf;     /* 솜사탕 핑크 */
+            --accent-color: #ff9faec;        /* 파스텔 피치 */
+            --mint-color: #a8e6cf;          /* 소프트 민트 */
+            --yellow-color: #ffd3b6;        /* 바닐라 크림 옐로우 */
+            --bg-gradient: linear-gradient(135deg, #f3f0ff 0%, #e8f5e9 100%);
+            --card-shadow: 0 10px 25px rgba(125, 115, 230, 0.08);
+            --hover-shadow: 0 15px 32px rgba(125, 115, 230, 0.18);
         }
 
         body { 
@@ -21,150 +23,179 @@
             background: var(--bg-gradient); 
             margin: 0; 
             padding: 20px; 
-            color: #2d3436; 
+            color: #4a4a4a; 
             min-height: 100vh;
+            position: relative;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding-bottom: 5px; }
-        h1, h2, h3 { margin-top: 0; color: #2d3436; font-weight: 700; }
-        hr { border: 0; height: 1px; background: #dfe6e9; margin: 30px 0; }
+        .container { max-width: 1100px; margin: 0 auto; padding-bottom: 50px; position: relative; z-index: 1; }
+        h1, h2, h3 { margin-top: 0; color: #3b3759; font-weight: 700; }
+        hr { border: 0; height: 3px; background: dotted var(--secondary-color); margin: 40px 0; width: 50%; margin-left: auto; margin-right: auto; }
 
         /* 🔐 로그인 모달 팝업 */
         .login-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(162, 155, 254, 0.95)); 
+            background: linear-gradient(135deg, rgba(125, 115, 230, 0.95), rgba(239, 187, 207, 0.95)); 
             display: flex; justify-content: center; align-items: center; z-index: 9999; 
         }
         .login-box { 
-            background: white; padding: 40px 30px; border-radius: 24px; 
+            background: white; padding: 40px 30px; border-radius: 28px; 
             width: 85%; max-width: 380px; text-align: center; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15); 
         }
         .login-box h2 { color: var(--primary-color); margin-bottom: 10px; font-size: 26px; }
         .login-box input { 
             width: 100%; padding: 14px; margin: 10px 0; 
-            border: 2px solid #edf2f7; border-radius: 12px; box-sizing: border-box; 
-            font-size: 16px; transition: 0.3s;
+            border: 2px solid #f0edf5; border-radius: 14px; box-sizing: border-box; 
+            font-size: 16px; transition: 0.3s; background-color: #faf9fc;
         }
-        .login-box input:focus { border-color: var(--primary-color); outline: none; }
+        .login-box input:focus { border-color: var(--primary-color); outline: none; background-color: #fff; }
         .login-btn { 
             width: 100%; padding: 14px; background: var(--primary-color); color: white; 
-            border: none; border-radius: 12px; font-size: 16px; font-weight: bold; 
-            cursor: pointer; transition: 0.3s; margin-top: 15px;
+            border: none; border-radius: 14px; font-size: 16px; font-weight: bold; 
+            cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 5px 15px rgba(125, 115, 230, 0.3);
         }
-        .login-btn:hover { background: #5b4bc4; transform: translateY(-2px); }
+        .login-btn:hover { background: #685ec4; transform: translateY(-2px); }
 
-        /* 상단 유저 정보 바 */
+        /* 👤 상단 유저 정보 바 및 로그아웃 버튼 스타일 */
         .user-bar { 
             display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
-            padding: 15px 25px; border-radius: 18px; margin-bottom: 25px; box-shadow: var(--card-shadow); 
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+            padding: 18px 28px; border-radius: 20px; margin-bottom: 25px; box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
+        .logout-btn {
+            background: #ff9aa2; color: white; border: none; padding: 6px 14px;
+            border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: bold; margin-left: 10px;
+            transition: 0.2s;
+        }
+        .logout-btn:hover { background: #ff7b87; }
 
         /* 🗺️ 중단 레이아웃 (좌 지도 / 우 일정) */
         .top-section { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         @media (max-width: 768px) { .top-section { grid-template-columns: 1fr; } }
          
         .info-panel { 
-            background: white; padding: 25px; border-radius: 20px; box-shadow: var(--card-shadow); 
-            transition: 0.3s;
+            background: white; padding: 25px; border-radius: 24px; box-shadow: var(--card-shadow); 
+            transition: 0.3s; box-sizing: border-box; border: 1px solid rgba(255, 255, 255, 0.6);
         }
         .info-panel:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
-        .map-img { width: 100%; border-radius: 14px; border: 1px solid #edf2f7; display: block; object-fit: cover; }
-        .timetable p { padding: 12px 0; border-bottom: 1px dashed #edf2f7; margin: 0; font-size: 15px; }
-        .timetable p strong { color: var(--primary-color); }
+        .info-panel h3 { display: flex; align-items: center; gap: 8px; font-size: 20px; border-bottom: 2px solid #f3f0ff; padding-bottom: 10px; margin-bottom: 15px; }
+        .map-container { position: relative; border-radius: 16px; overflow: hidden; border: 3px solid var(--yellow-color); }
+        .map-img { width: 100%; height: auto; max-height: 280px; display: block; object-fit: cover; }
+        
+        .timetable p { padding: 14px 10px; border-bottom: 1px dashed #ede9f5; margin: 0; font-size: 15px; display: flex; align-items: center; }
+        .timetable p:last-child { border-bottom: none; }
+        .timetable p strong { color: var(--primary-color); background: #f3f0ff; padding: 3px 8px; border-radius: 8px; margin-right: 12px; font-size: 14px; }
 
         /* 🎪 하단 부스 섹션 */
         .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .section-title h2 { display: flex; align-items: center; gap: 8px; margin: 0; }
         .add-btn { 
-            background: var(--primary-color); color: white; border: none; 
-            width: 45px; height: 45px; border-radius: 12px; cursor: pointer; 
+            background: var(--mint-color); color: #3b7a66; border: none; 
+            width: 45px; height: 45px; border-radius: 14px; cursor: pointer; 
             font-size: 24px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(168, 230, 207, 0.4);
         }
-        .add-btn:hover { transform: rotate(90deg); background: #5b4bc4; }
+        .add-btn:hover { transform: rotate(90deg); background: #94d7bd; }
          
-        /* 부스 그리드 및 카드 디자인 */
-        .booth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; transition: all 0.4s ease; }
+        .booth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+        
+        /* 🎨 옆면에 파스텔 포인트 칼라 세로 선을 넣은 귀여운 카드 디자인 */
         .booth-card { 
-            background: white; padding: 20px; border-radius: 18px; box-shadow: var(--card-shadow); 
-            border: 1px solid rgba(255,255,255,0.8); position: relative; cursor: pointer; transition: all 0.3s ease; 
+            background: white; padding: 22px 22px 22px 30px; border-radius: 20px; box-shadow: var(--card-shadow); 
+            position: relative; cursor: pointer; transition: all 0.3s ease; 
+            border: 1px solid rgba(255,255,255,0.8); overflow: hidden;
         }
-        .booth-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-        .booth-card h3 { margin-bottom: 5px; padding-right: 30px; font-size: 18px; }
-        .booth-card p { margin: 5px 0; color: #666; font-size: 14px; }
-        .booth-card .loc { color: #4e73df; font-weight: bold; font-size: 13px; }
+        .booth-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: var(--primary-color);
+        }
+        /* 카드마다 파스텔톤 다채롭게 부여 */
+        .booth-grid .booth-card:nth-child(even)::before { background: var(--secondary-color); }
+        .booth-grid .booth-card:nth-child(3n)::before { background: var(--mint-color); }
+        
+        .booth-card:hover { transform: translateY(-4px); box-shadow: var(--hover-shadow); }
+        .booth-card h3 { margin: 0 0 8px 0; padding-right: 30px; font-size: 19px; color: #3b3759; }
+        .booth-card p { margin: 6px 0; color: #75728a; font-size: 14px; line-height: 1.4; }
+        .booth-card .loc { background: #fdf5f7; color: #db6b8f; font-weight: bold; font-size: 12px; display: inline-block; margin-top: 10px; padding: 4px 10px; border-radius: 8px; border: 1px dashed #f7d6e0; }
          
-        /* ⭐ 즐겨찾기 버튼 */
-        .fav-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: #ccc; padding: 0; }
-        .fav-btn.active { color: #f1c40f; }
+        .fav-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 22px; cursor: pointer; color: #dddaeb; padding: 0; z-index: 10; transition: 0.2s; }
+        .fav-btn.active { color: #ffb7b2; transform: scale(1.1); }
 
         /* 👤 마이페이지 & 스탬프 빙고 구역 */
-        .mypage-panel { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 25px; }
-        .bingo-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 320px; margin: 20px auto; }
-        .cell { width: 100px; height: 100px; background: #f8f9fa; border: 2px solid #e2e8f0; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; position: relative; cursor: pointer; box-sizing: border-box; text-align: center; padding: 5px; }
-        .cell.checked { background: #ffde59; border-color: #ffbd59; color: #333; }
-        .cell.checked::after { content: '✔️'; position: absolute; bottom: 5px; font-size: 14px; }
-        .submit-btn { background: #2ecc71; color: white; border: none; padding: 14px; font-size: 16px; border-radius: 8px; cursor: pointer; width: 100%; max-width: 320px; margin: 10px auto; display: block; font-weight: bold; }
-        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .mypage-panel { background: #fff; padding: 35px 25px; border-radius: 28px; box-shadow: var(--card-shadow); margin-top: 30px; border: 2px solid #f3f0ff; }
+        
+        /* 📷 QR 스캐너 인터페이스 스타일 */
+        .qr-scanner-box { max-width: 400px; margin: 15px auto; border-radius: 20px; overflow: hidden; border: 3px dashed var(--primary-color); background: #fafafa; }
+        .scan-toggle-btn { background: var(--primary-color); color: white; border: none; padding: 12px 24px; border-radius: 14px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 25px auto; transition: 0.2s; box-shadow: 0 4px 12px rgba(125, 115, 230, 0.3); }
+        .scan-toggle-btn:hover { background: #685ec4; }
 
-        /* 일반 모달 팝업 디자인 */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
-        .modal-content { background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 400px; position: relative; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #aaa; }
+        /* 🎨 파스텔톤 계란판 컨셉의 아기자기한 빙고판 */
+        .bingo-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 340px; margin: 25px auto; padding: 15px; background: #faf9fe; border-radius: 22px; border: 1px dashed #e4def2; }
+        .cell { width: 100px; height: 100px; background: white; border: 2px solid #ede9f5; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; position: relative; box-sizing: border-box; text-align: center; padding: 8px; transition: 0.2s; color: #5a5673; box-shadow: 0 4px 8px rgba(0,0,0,0.02); }
+        .cell.checked { background: #ffe4e1; border-color: #ffb7b2; color: #b05650; box-shadow: 0 6px 12px rgba(255, 183, 178, 0.4); }
+        .cell.checked::after { content: '🌸'; position: absolute; bottom: 6px; font-size: 13px; }
+        
+        .submit-btn { background: var(--mint-color); color: #3b7a66; border: none; padding: 15px; font-size: 16px; border-radius: 14px; cursor: pointer; width: 100%; max-width: 340px; margin: 15px auto; display: block; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3); }
+        .submit-btn:disabled { background: #e0ddf0; color: #a39eb8; cursor: not-allowed; box-shadow: none; }
+
+        /* 🚨 일반 모달 팝업 디자인 및 부스 이미지 구역 추가 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(59, 55, 89, 0.4); justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 35px 30px; border-radius: 28px; width: 90%; max-width: 420px; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.1); box-sizing: border-box; border: 1px solid #f0edf5; }
+        .modal-content h3 { color: var(--primary-color); margin-bottom: 20px; font-size: 22px; }
+        .modal-content input { width: 100%; padding: 13px; margin-bottom: 12px; border: 2px solid #f0edf5; border-radius: 12px; box-sizing: border-box; font-size: 15px; background: #faf9fc; }
+        .modal-content input:focus { border-color: var(--primary-color); outline: none; background: white; }
+        .close-btn { position: absolute; top: 18px; right: 22px; font-size: 28px; cursor: pointer; color: #ccc; transition: 0.2s; }
+        .close-btn:hover { color: #3b3759; }
+        .modal-booth-img { width: 100%; height: 190px; object-fit: cover; border-radius: 16px; margin-bottom: 18px; border: 3px solid var(--yellow-color); display: none; }
     </style>
 </head>
 <body>
 
-<div id="loginGate" class="login-overlay">
-    <div class="login-box">
-        <h2>🎪 축제 입장 인증</h2>
-        <p style="color: #666; font-size: 14px;">학번과 이름을 입력해 주세요.</p>
-        <input type="number" id="studentId" placeholder="학번 (예: 10101)">
-        <input type="text" id="studentName" placeholder="이름 (예: 김건우)">
-        <button class="login-btn" onclick="checkAccess()">입장하기</button>
-    </div>
-</div>
-
 <div class="container">
     <div class="user-bar">
-        <h2 style="margin:0; font-size: 20px;">🏫 동아리 박람회 메인 정보</h2>
-        <div id="userInfo" style="font-weight: bold; color: #4e73df;">로그인 정보 없음</div>
+        <h2 style="margin:0; font-size: 20px; display: flex; align-items: center; gap: 8px;">✨ 박람회 투어 패스</h2>
+        <div style="display: flex; align-items: center;">
+            <span id="userInfo" style="font-weight: bold; color: var(--primary-color); font-size: 15px;">인증 확인 중...</span>
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
+        </div>
     </div>
 
     <div class="top-section">
         <div class="info-panel">
-            <h3>🗺️ 안내 지도</h3>
-            <img class="map-img" src="https://via.placeholder.com/500x350?text=School+Map+Image" alt="학교 지도">
+            <h3>📍 박람회 안내 지도</h3>
+            <div class="map-container">
+                <img class="map-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=500&auto=format&fit=crop" alt="학교 전경">
+            </div>
         </div>
         <div class="info-panel timetable">
-            <h3>⏰ 행사 일정표</h3>
-            <p><strong>08:30 - 09:00 (30')</strong> 조회, 부스 이동, 준비</p>
-            <p><strong>09:00 - 10:40 (100')</strong> 부스 운영 1타임</p>
-            <p><strong>10:40 - 12:20 (100')</strong> 부스 운영 2타임</p>
-            <p><strong>13:30 - 15:00 (90')</strong> 부스 운영 3타임 (정리 포함)</p>
-            <p><strong>15:00 - 16:00 (60')</strong> 동아리 박람회 골든벨</p>
-            <p><strong>16:00 - 16:30 (30')</strong> 교실 이동, 정리, 종례</p>
+            <h3>🎨 박람회 타임테이블</h3>
+            <p><strong>08:30 - 09:00</strong> 🎪 축제 준비 및 부스 이동</p>
+            <p><strong>09:00 - 10:40</strong> 🕒 박람회 운영 1타임</p>
+            <p><strong>10:40 - 12:20</strong> 🕒 박람회 운영 2타임</p>
+            <p><strong>13:30 - 15:00</strong> 🕒 박람회 운영 3타임 (정리 포함)</p>
+            <p><strong>15:00 - 16:00</strong> 🔔 박람회 종합 골든벨!</p>
         </div>
     </div>
 
     <hr>
 
     <div class="section-title">
-        <h2>🎪 동아리 부스 안내</h2>
+        <h2>🎈 참여 동아리 부스</h2>
         <button class="add-btn" onclick="openModal('addModal')">+</button>
     </div>
     
     <div class="booth-grid" id="boothContainer">
-        <div class="booth-card" onclick="showDetail('로봇공학반', '드론 장애물 조종 경기와 미니 로봇 축구 게임을 직접 체험해 볼 수 있는 부스입니다! 선착순 기념품 증정!', '2층 2-3교실')">
+        <div class="booth-card" onclick="handleCardClick(event, '로봇공학반', '드론 장애물 조종 경기와 미니 로봇 축구 게임을 직접 체험해 볼 수 있는 부스입니다! QR코드 키워드: robot', '2층 2-3교실', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=500&auto=format&fit=crop')">
             <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
             <h3>로봇공학반</h3>
-            <p>🤖 로봇 축구 & 드론 체험</p>
+            <p>🤖 로봇 축구 & 드론 레이싱 체험 경기</p>
             <span class="loc">📍 2층 2-3교실</span>
         </div>
-        <div class="booth-card" onclick="showDetail('실험과학반', '화려한 불꽃 반응 실험과 코끼리 치약 만들기 실험을 눈앞에서 실시간으로 관람하세요.', '과학실 1')">
+        <div class="booth-card" onclick="handleCardClick(event, '실험과학반', '화려한 불꽃 반응 실험과 코끼리 치약 만들기 실험을 눈앞에서 실시간으로 관람하세요. QR코드 키워드: science', '과학실 1', 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=500&auto=format&fit=crop')">
             <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
             <h3>실험과학반</h3>
-            <p>🧪 흥미진진한 과학 실험</p>
+            <p>🧪 흥미진진한 화학 분수 반응 실험</p>
             <span class="loc">📍 과학실 1</span>
         </div>
     </div>
@@ -172,32 +203,38 @@
     <hr>
 
     <div class="mypage-panel">
-        <h2 style="text-align: center;">👤 마이페이지 & 스탬프 투어</h2>
-        <p style="text-align: center; color: #666; font-size: 14px;">각 부스에 배치된 QR코드를 스캔하면 스탬프가 자동으로 찍힙니다!</p>
+        <h2 style="text-align: center; margin-bottom: 5px;">🌸 스탬프 투어 3줄 빙고</h2>
+        <p style="text-align: center; color: #75728a; font-size: 14px; margin-top: 0;">부스의 QR코드를 스캔하면 예쁜 스탬프가 자동으로 날인됩니다!</p>
+        
+        <button class="scan-toggle-btn" id="scanCtrlBtn" onclick="toggleQRScanner()">📷 부스 QR 스캔 시작</button>
+        <div class="qr-scanner-box">
+            <div id="qr-reader" style="width: 100%;"></div>
+        </div>
         
         <div class="bingo-board" id="bingoBoard">
-            <div class="cell" id="b1" onclick="toggleStamp('b1')">로봇반</div>
-            <div class="cell" id="b2" onclick="toggleStamp('b2')">과학반</div>
-            <div class="cell" id="b3" onclick="toggleStamp('b3')">밴드부</div>
-            <div class="cell" id="b4" onclick="toggleStamp('b4')">댄스부</div>
-            <div class="cell" id="b5" onclick="toggleStamp('b5')">미술반</div>
-            <div class="cell" id="b6" onclick="toggleStamp('b6')">컴퓨터반</div>
-            <div class="cell" id="b7" onclick="toggleStamp('b7')">농구부</div>
-            <div class="cell" id="b8" onclick="toggleStamp('b8')">연극부</div>
-            <div class="cell" id="b9" onclick="toggleStamp('b9')">도서반</div>
+            <div class="cell" id="b1" data-qr="robot">로봇반</div>
+            <div class="cell" id="b2" data-qr="science">과학반</div>
+            <div class="cell" id="b3" data-qr="band">밴드부</div>
+            <div class="cell" id="b4" data-qr="dance">댄스부</div>
+            <div class="cell" id="b5" data-qr="art">미술반</div>
+            <div class="cell" id="b6" data-qr="com">컴퓨터반</div>
+            <div class="cell" id="b7" data-qr="basket">농구부</div>
+            <div class="cell" id="b8" data-qr="drama">연극부</div>
+            <div class="cell" id="b9" data-qr="book">도서반</div>
         </div>
-        <button class="submit-btn" id="submitBingo" disabled onclick="submitPrize()">🎁 상품 신청하기 (3줄 빙고 필요)</button>
+        <button class="submit-btn" id="submitBingo" disabled onclick="submitPrize()">🎁 상품 보상 신청 (3줄 완성 필요)</button>
     </div>
 </div>
 
 <div id="addModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('addModal')">&times;</span>
-        <h3>➕ 새 부스 추가하기</h3>
+        <h3>🎨 새 부스 기획/등록</h3>
         <input type="text" id="newTitle" placeholder="부스 이름 (예: 컴퓨터반)">
-        <input type="text" id="newShort" placeholder="간단한 한 줄 설명">
-        <input type="text" id="newLocation" placeholder="위치 (예: 3층 멀티미디어실)">
-        <textarea id="newLong" placeholder="클릭 시 나타날 상세 정보 설명" style="width:100%; height:80px; margin: 10px 0; border:1px solid #ddd; border-radius:8px; padding:10px; box-sizing:border-box; font-size:16px;"></textarea>
+        <input type="text" id="newShort" placeholder="대표 한 줄 슬로건">
+        <input type="text" id="newLocation" placeholder="운영 장소 (예: 3층 멀티미디어실)">
+        <input type="text" id="newImgUrl" placeholder="📸 카드 일러스트 이미지 주소링크 (선택)">
+        <textarea id="newLong" placeholder="카드를 열었을 때 나타날 상세 동아리 활동 정보 안내" style="width:100%; height:90px; margin-bottom: 15px; border:2px solid #f0edf5; border-radius:12px; padding:12px; box-sizing:border-box; font-size:15px; font-family:inherit; background: #faf9fc; resize: none;"></textarea>
         <button class="login-btn" onclick="addNewBooth()">부스 등록하기</button>
     </div>
 </div>
@@ -205,14 +242,15 @@
 <div id="detailModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
+        <img id="detailImg" class="modal-booth-img" src="" alt="부스 사진">
         <h3 id="detailTitle">부스 이름</h3>
-        <p id="detailDesc" style="margin: 20px 0; line-height: 1.6; color: #555;"></p>
-        <p style="color: #4e73df; font-weight: bold; margin: 0;"><span id="detailLoc"></span></p>
+        <p id="detailDesc" style="margin: 15px 0; line-height: 1.6; color: #615e78; font-size: 15px;"></p>
+        <p style="color: var(--primary-color); font-weight: bold; margin: 0; font-size: 14px;"><span id="detailLoc"></span></p>
     </div>
 </div>
 
 <script>
-    // 💡 [관리자 명단 데이터] 입장 가능한 명단 데이터베이스 대조군
+    // 🔐 관리자 지정 출입 허용 고유 식별 명단 내부 DB
     const allowedStudents = {
         "10101": "김건우",
         "20515": "신어진",
@@ -220,110 +258,163 @@
         "20506": "김수인"
     };
 
-    window.onload = function() {
-        // [QR 스캔 감지 로직] 주소 뒤에 ?scan=b1 등이 붙어서 올 경우 처리
-        const urlParams = new URLSearchParams(window.location.search);
-        const scanId = urlParams.get('scan');
-        if (scanId) {
-            let savedStamps = JSON.parse(localStorage.getItem('myStamps') || '[]');
-            if(!savedStamps.includes(scanId)) {
-                savedStamps.push(scanId);
-                localStorage.setItem('myStamps', JSON.stringify(savedStamps));
-                alert("스탬프가 성공적으로 적립되었습니다!");
-            }
-            window.history.replaceState({}, document.title, window.location.pathname); // 주소창 청소
-        }
+    let html5QrcodeScanner = null;
 
-        // 로그인 여부 확인
+    window.onload = function() {
         if (localStorage.getItem('isLoggedIn') === 'true') {
             openMainPage();
+        } else {
+            document.getElementById('loginGate').style.display = 'flex';
         }
     }
 
-    // 로그인 검증
     function checkAccess() {
         const id = document.getElementById('studentId').value.trim();
         const name = document.getElementById('studentName').value.trim();
+        const stringId = String(id);
         
-        if (allowedStudents[id] && allowedStudents[id] === name) {
+        if (allowedStudents[stringId] && allowedStudents[stringId] === name) {
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('studentId', id);
+            localStorage.setItem('studentId', stringId);
             localStorage.setItem('studentName', name);
-            alert(`${name}님, 인증되었습니다!`);
+            alert(`반가워요, ${name}님! 인증되었습니다 ✨`);
             openMainPage();
         } else {
-            alert("정보가 유효하지 않습니다. 관리자가 입력해둔 학번과 이름을 확인하세요.");
+            alert("등록된 정보와 일치하지 않습니다. 학번 혹은 이름을 확인하세요!");
         }
     }
 
+    function logout() {
+        if(html5QrcodeScanner) { stopScanner(); }
+        localStorage.clear();
+        alert("로그아웃 되었습니다. 축제 패스를 종료합니다.");
+        location.reload();
+    }
+
     function openMainPage() {
-        document.getElementById('loginGate').style.display = 'none'; // 로그인 창 닫기
-        document.getElementById('userInfo').innerText = `학번: ${localStorage.getItem('studentId')} | 이름: ${localStorage.getItem('studentName')}`;
+        document.getElementById('loginGate').style.display = 'none';
+        document.getElementById('userInfo').innerText = `👋 ${localStorage.getItem('studentName')} (${localStorage.getItem('studentId')})`;
         loadSavedStamps();
     }
 
-    // 모달 팝업 유틸리티
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // 부스 상세설명 팝업 띄우기
-    function showDetail(title, desc, loc) {
+    function handleCardClick(event, title, desc, loc, imgUrl) {
+        if (event.target.closest('.fav-btn')) return;
+        showDetail(title, desc, loc, imgUrl);
+    }
+
+    function showDetail(title, desc, loc, imgUrl) {
+        const imgElement = document.getElementById('detailImg');
+        if (imgUrl && imgUrl.trim() !== "") {
+            imgElement.src = imgUrl;
+            imgElement.style.display = 'block';
+        } else {
+            imgElement.style.display = 'none';
+        }
         document.getElementById('detailTitle').innerText = title;
         document.getElementById('detailDesc').innerText = desc || '상세 내용 준비 중입니다.';
         document.getElementById('detailLoc').innerText = `📍 위치: ${loc}`;
         openModal('detailModal');
     }
 
-    // ⭐ 즐겨찾기 토글 기능
     function toggleFavorite(event, button) {
-        event.stopPropagation(); // 부스 카드 클릭 이벤트가 중복 실행되는 것 방지
+        event.stopPropagation();
         button.classList.toggle('active');
-        if(button.classList.contains('active')) {
-            button.innerText = '★';
-        } else {
-            button.innerText = '☆';
-        }
+        button.innerText = button.classList.contains('active') ? '★' : '☆';
     }
 
-    // ➕ 관리자가 화면 상에서 직접 부스 추가하는 기능
     function addNewBooth() {
         const title = document.getElementById('newTitle').value.trim();
         const short = document.getElementById('newShort').value.trim();
         const loc = document.getElementById('newLocation').value.trim();
+        const imgUrl = document.getElementById('newImgUrl').value.trim();
         const long = document.getElementById('newLong').value.trim();
 
-        if(!title || !loc) return alert('부스 이름과 위치는 필수 항목입니다!');
+        if(!title || !loc) return alert('부스 이름과 위치는 필수 입력 사항입니다!');
 
         const card = document.createElement('div');
         card.className = 'booth-card';
-        card.onclick = () => showDetail(title, long, loc);
+        card.onclick = (e) => handleCardClick(e, title, long, loc, imgUrl);
+        
         card.innerHTML = `
             <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
             <h3>${title}</h3>
-            <p>${short || '즐거운 축제 부스'}</p>
+            <p>${short || '파스텔빛 재미가 가득한 축제 부스'}</p>
             <span class="loc">📍 ${loc}</span>
         `;
-        
         document.getElementById('boothContainer').appendChild(card);
         closeModal('addModal');
 
-        // 입력 폼 청소
         document.getElementById('newTitle').value = '';
         document.getElementById('newShort').value = '';
         document.getElementById('newLocation').value = '';
+        document.getElementById('newImgUrl').value = '';
         document.getElementById('newLong').value = '';
     }
 
-    // 잘린 스크립트 보완 (기능 정상 작동 유도용 더미 포함)
-    function toggleStamp(id) {
-        let savedStamps = JSON.parse(localStorage.getItem('myStamps') || '[]');
-        if (savedStamps.includes(id)) {
-            savedStamps = savedStamps.filter(item => item !== id);
+    function toggleQRScanner() {
+        const btn = document.getElementById('scanCtrlBtn');
+        if (!html5QrcodeScanner) {
+            btn.innerText = "🛑 스캐너 시스템 끄기";
+            btn.style.background = "#ff9aa2";
+            startScanner();
         } else {
-            savedStamps.push(id);
+            btn.innerText = "📷 부스 QR 스캔 시작";
+            btn.style.background = "var(--primary-color)";
+            stopScanner();
         }
-        localStorage.setItem('myStamps', JSON.stringify(savedStamps));
-        loadSavedStamps();
+    }
+
+    function startScanner() {
+        html5QrcodeScanner = new Html5Qrcode("qr-reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        
+        html5QrcodeScanner.start(
+            { facingMode: "environment" }, 
+            config,
+            onScanSuccess
+        ).catch(err => {
+            console.error(err);
+            alert("카메라 연결 실패! 기기 권한 환경을 체크하세요.");
+            toggleQRScanner();
+        });
+    }
+
+    function stopScanner() {
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.stop().then(() => {
+                html5QrcodeScanner = null;
+                document.getElementById('qr-reader').innerHTML = "";
+            }).catch(err => {
+                console.error(err);
+                html5QrcodeScanner = null;
+                document.getElementById('qr-reader').innerHTML = "";
+            });
+        }
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        const scannedValue = decodedText.trim();
+        const targetCell = document.querySelector(`.cell[data-qr="${scannedValue}"]`);
+
+        if (targetCell) {
+            const cellId = targetCell.getAttribute('id');
+            let savedStamps = JSON.parse(localStorage.getItem('myStamps') || '[]');
+            
+            if (!savedStamps.includes(cellId)) {
+                savedStamps.push(cellId);
+                localStorage.setItem('myStamps', JSON.stringify(savedStamps));
+                loadSavedStamps();
+                const cellName = targetCell.innerText.replace('✔️', '').replace('🌸', '').trim();
+                alert(`🌸 [${cellName}] 스탬프가 매칭 보드에 찍혔습니다!`);
+            } else {
+                alert("이미 획득 완료 처리된 스탬프 패스입니다.");
+            }
+        } else {
+            alert(`매칭 실패: [${scannedValue}] 키워드의 동아리가 보드에 없습니다.`);
+        }
     }
 
     function loadSavedStamps() {
@@ -355,17 +446,19 @@
         const btn = document.getElementById('submitBingo');
         if (lines >= 3) {
             btn.removeAttribute('disabled');
-            btn.innerText = "🎁 상품 신청하기! (달성 완료)";
+            btn.style.background = 'var(--mint-color)';
+            btn.style.color = '#3b7a66';
+            btn.innerText = "🎁 축제 보상 상품 교환하기 (달성 완료)";
         } else {
             btn.setAttribute('disabled', 'true');
-            btn.innerText = `🎁 상품 신청하기 (${lines}/3 줄 완성)`;
+            btn.innerText = `🎁 상품 교환하기 (${lines}/3 완성)`;
         }
     }
 
     function submitPrize() {
         const name = localStorage.getItem('studentName');
         const id = localStorage.getItem('studentId');
-        alert(`[제출 완료]\n학번: ${id}\n이름: ${name}\n3줄 빙고 신청이 완료되었습니다!`);
+        alert(`🎉 [교환 접수 확인]\n학번: ${id}\n이름: ${name}\n축제 부스 운영 부스에 가셔서 상품을 수령하세요!`);
     }
 </script>
 </body>
