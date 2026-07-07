@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 박람회</title>
+    <style>
+        /* 디자인 영역 */
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .booth { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 2px 2px 5px #ccc; }
+        button { background: #ff6b6b; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        h1 { text-align: center; color: #333; }
+    </style>
+</head>
+<body>
+
+    <h1>동아리 박람회</h1>
+
+    <div id="booth-list">
+        <div class="booth">
+            <h3>로봇 동아리</h3>
+            <p>설명: 드론 조종 및 로봇 제작 체험</p>
+            <button onclick="addFavorite('로봇 동아리')">⭐ 즐겨찾기</button>
+        </div>
+        <div class="booth">
+            <h3>요리 동아리</h3>
+            <p>설명: 간단한 디저트 만들기 체험</p>
+            <button onclick="addFavorite('요리 동아리')">⭐ 즐겨찾기</button>
+        </div>
+    </div>
+
+    <script>
+        function addFavorite(name) {
+            alert(name + " 동아리가 즐겨찾기에 추가되었습니다!");
+        }
+    </script>
+</body>
+</html>
