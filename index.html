@@ -6,175 +6,236 @@
     <title>🎪 동아리 박람회 종합 안내</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        /* 🎨 따뜻하고 화사한 파스텔톤 축제 테마 정의 */
+        /* 🎨 선명하고 생기 있는 진한 파스텔톤 축제 테마 정의 */
         :root {
-            --primary-color: #7d73e6;       /* 부드러운 라벤더 퍼플 */
-            --secondary-color: #efbbcf;     /* 솜사탕 핑크 */
-            --accent-color: #ff9faec;        /* 파스텔 피치 */
-            --mint-color: #a8e6cf;          /* 소프트 민트 */
-            --yellow-color: #ffd3b6;        /* 바닐라 크림 옐로우 */
-            --bg-gradient: linear-gradient(135deg, #f3f0ff 0%, #e8f5e9 100%);
-            --card-shadow: 0 10px 25px rgba(125, 115, 230, 0.08);
-            --hover-shadow: 0 15px 32px rgba(125, 115, 230, 0.18);
+            --primary-color: #6c5ce7;       /* 진한 라벤더 퍼플 */
+            --secondary-color: #ff85a2;     /* 달콤한 파스텔 핫핑크 */
+            --accent-color: #ffbe76;        /* 진한 파스텔 오렌지 */
+            --mint-color: #2ed573;          /* 선명한 파스텔 그린 */
+            --yellow-color: #ffca28;        /* 생생한 진한 옐로우 */
+            --bg-gradient: linear-gradient(135deg, #ede7f6 0%, #e8f5e9 100%);
+            --card-shadow: 0 8px 20px rgba(108, 92, 231, 0.12);
+            --hover-shadow: 0 12px 28px rgba(108, 92, 231, 0.22);
+        }
+
+        * {
+            box-sizing: border-box; /* 모바일 삐져나옴 방지 기본막 */
         }
 
         body { 
             font-family: 'Pretendard', -apple-system, sans-serif; 
             background: var(--bg-gradient); 
             margin: 0; 
-            padding: 20px; 
-            color: #4a4a4a; 
+            padding: 15px; 
+            color: #2d3436; 
             min-height: 100vh;
-            position: relative;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding-bottom: 50px; position: relative; z-index: 1; }
+        .container { max-width: 1100px; margin: 0 auto; padding-bottom: 50px; }
         h1, h2, h3 { margin-top: 0; color: #3b3759; font-weight: 700; }
-        hr { border: 0; height: 3px; background: dotted var(--secondary-color); margin: 40px 0; width: 50%; margin-left: auto; margin-right: auto; }
+        hr { border: 0; height: 3px; background: dotted var(--secondary-color); margin: 35px 0; width: 60%; margin-left: auto; margin-right: auto; }
 
         /* 🔐 로그인 모달 팝업 */
         .login-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, rgba(125, 115, 230, 0.95), rgba(239, 187, 207, 0.95)); 
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(255, 133, 162, 0.95)); 
             display: flex; justify-content: center; align-items: center; z-index: 9999; 
         }
         .login-box { 
-            background: white; padding: 40px 30px; border-radius: 28px; 
-            width: 85%; max-width: 380px; text-align: center; 
+            background: white; padding: 35px 25px; border-radius: 24px; 
+            width: 90%; max-width: 360px; text-align: center; 
             box-shadow: 0 20px 45px rgba(0,0,0,0.15); 
         }
-        .login-box h2 { color: var(--primary-color); margin-bottom: 10px; font-size: 26px; }
+        .login-box h2 { color: var(--primary-color); margin-bottom: 10px; font-size: 24px; }
         .login-box input { 
-            width: 100%; padding: 14px; margin: 10px 0; 
-            border: 2px solid #f0edf5; border-radius: 14px; box-sizing: border-box; 
+            width: 100%; padding: 14px; margin: 8px 0; 
+            border: 2px solid #eef2f5; border-radius: 12px; box-sizing: border-box; 
             font-size: 16px; transition: 0.3s; background-color: #faf9fc;
         }
         .login-box input:focus { border-color: var(--primary-color); outline: none; background-color: #fff; }
-        .login-btn { 
-            width: 100%; padding: 14px; background: var(--primary-color); color: white; 
-            border: none; border-radius: 14px; font-size: 16px; font-weight: bold; 
-            cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 5px 15px rgba(125, 115, 230, 0.3);
-        }
-        .login-btn:hover { background: #685ec4; transform: translateY(-2px); }
 
-        /* 👤 상단 유저 정보 바 및 로그아웃 버튼 스타일 */
+        /* 👤 상단 유저 정보 바 (모바일 글자 겹침 버그 완벽 수정) */
         .user-bar { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
-            padding: 18px 28px; border-radius: 20px; margin-bottom: 25px; box-shadow: var(--card-shadow); 
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(10px);
+            padding: 14px 16px; 
+            border-radius: 18px; 
+            margin-bottom: 20px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            gap: 10px;
+        }
+        .user-bar h2 { 
+            font-size: 17px; 
+            white-space: nowrap; 
+            margin: 0;
+            flex-shrink: 0;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+        #userInfo { 
+            font-weight: bold; 
+            color: var(--primary-color); 
+            font-size: 13px; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .logout-btn {
-            background: #ff9aa2; color: white; border: none; padding: 6px 14px;
-            border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: bold; margin-left: 10px;
-            transition: 0.2s;
+            background: var(--secondary-color); color: white; border: none; padding: 8px 12px;
+            border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: bold;
+            transition: 0.2s; white-space: nowrap; flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(255, 133, 162, 0.3);
         }
-        .logout-btn:hover { background: #ff7b87; }
+        .logout-btn:hover { background: #e06c87; }
 
         /* 🗺️ 중단 레이아웃 (좌 지도 / 우 일정) */
-        .top-section { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .top-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         @media (max-width: 768px) { .top-section { grid-template-columns: 1fr; } }
          
         .info-panel { 
-            background: white; padding: 25px; border-radius: 24px; box-shadow: var(--card-shadow); 
-            transition: 0.3s; box-sizing: border-box; border: 1px solid rgba(255, 255, 255, 0.6);
+            background: white; padding: 22px; border-radius: 22px; box-shadow: var(--card-shadow); 
+            box-sizing: border-box; border: 1px solid rgba(255, 255, 255, 0.6);
         }
-        .info-panel:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
-        .info-panel h3 { display: flex; align-items: center; gap: 8px; font-size: 20px; border-bottom: 2px solid #f3f0ff; padding-bottom: 10px; margin-bottom: 15px; }
-        .map-container { position: relative; border-radius: 16px; overflow: hidden; border: 3px solid var(--yellow-color); }
-        .map-img { width: 100%; height: auto; max-height: 280px; display: block; object-fit: cover; }
+        .info-panel h3 { display: flex; align-items: center; gap: 6px; font-size: 18px; border-bottom: 2px solid #f1ebfa; padding-bottom: 8px; margin-bottom: 12px; }
+        .map-container { position: relative; border-radius: 14px; overflow: hidden; border: 3px solid var(--accent-color); }
+        .map-img { width: 100%; height: auto; max-height: 250px; display: block; object-fit: cover; }
         
-        .timetable p { padding: 14px 10px; border-bottom: 1px dashed #ede9f5; margin: 0; font-size: 15px; display: flex; align-items: center; }
+        .timetable p { padding: 12px 6px; border-bottom: 1px dashed #ede9f5; margin: 0; font-size: 14px; display: flex; align-items: center; }
         .timetable p:last-child { border-bottom: none; }
-        .timetable p strong { color: var(--primary-color); background: #f3f0ff; padding: 3px 8px; border-radius: 8px; margin-right: 12px; font-size: 14px; }
+        .timetable p strong { color: white; background: var(--primary-color); padding: 3px 8px; border-radius: 6px; margin-right: 10px; font-size: 12px; white-space: nowrap; }
 
         /* 🎪 하단 부스 섹션 */
-        .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-        .section-title h2 { display: flex; align-items: center; gap: 8px; margin: 0; }
+        .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .section-title h2 { display: flex; align-items: center; gap: 6px; font-size: 20px; margin: 0; }
         .add-btn { 
-            background: var(--mint-color); color: #3b7a66; border: none; 
-            width: 45px; height: 45px; border-radius: 14px; cursor: pointer; 
-            font-size: 24px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(168, 230, 207, 0.4);
+            background: var(--mint-color); color: white; border: none; 
+            width: 42px; height: 42px; border-radius: 12px; cursor: pointer; 
+            font-size: 22px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(46, 213, 115, 0.3);
         }
-        .add-btn:hover { transform: rotate(90deg); background: #94d7bd; }
          
-        .booth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+        .booth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
         
-        /* 🎨 옆면에 파스텔 포인트 칼라 세로 선을 넣은 귀여운 카드 디자인 */
+        /* 🎨 옆면에 선명한 파스텔 포인트 칼라 세로 선 카드 */
         .booth-card { 
-            background: white; padding: 22px 22px 22px 30px; border-radius: 20px; box-shadow: var(--card-shadow); 
-            position: relative; cursor: pointer; transition: all 0.3s ease; 
+            background: white; padding: 20px 20px 20px 26px; border-radius: 18px; box-shadow: var(--card-shadow); 
+            position: relative; cursor: pointer; transition: all 0.2s ease; 
             border: 1px solid rgba(255,255,255,0.8); overflow: hidden;
         }
         .booth-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: var(--primary-color);
+            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary-color);
         }
-        /* 카드마다 파스텔톤 다채롭게 부여 */
         .booth-grid .booth-card:nth-child(even)::before { background: var(--secondary-color); }
-        .booth-grid .booth-card:nth-child(3n)::before { background: var(--mint-color); }
+        .booth-grid .booth-card:nth-child(3n)::before { background: var(--yellow-color); }
         
-        .booth-card:hover { transform: translateY(-4px); box-shadow: var(--hover-shadow); }
-        .booth-card h3 { margin: 0 0 8px 0; padding-right: 30px; font-size: 19px; color: #3b3759; }
-        .booth-card p { margin: 6px 0; color: #75728a; font-size: 14px; line-height: 1.4; }
-        .booth-card .loc { background: #fdf5f7; color: #db6b8f; font-weight: bold; font-size: 12px; display: inline-block; margin-top: 10px; padding: 4px 10px; border-radius: 8px; border: 1px dashed #f7d6e0; }
+        .booth-card:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
+        .booth-card h3 { margin: 0 0 6px 0; padding-right: 30px; font-size: 18px; color: #3b3759; }
+        .booth-card p { margin: 4px 0; color: #615e78; font-size: 14px; line-height: 1.4; }
+        .booth-card .loc { background: #fff2f5; color: #e05275; font-weight: bold; font-size: 12px; display: inline-block; margin-top: 8px; padding: 4px 8px; border-radius: 6px; border: 1px dashed #ffb3c6; }
          
-        .fav-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 22px; cursor: pointer; color: #dddaeb; padding: 0; z-index: 10; transition: 0.2s; }
-        .fav-btn.active { color: #ffb7b2; transform: scale(1.1); }
+        .fav-btn { position: absolute; top: 18px; right: 18px; background: none; border: none; font-size: 20px; cursor: pointer; color: #dddaeb; padding: 0; z-index: 10; }
+        .fav-btn.active { color: var(--yellow-color); }
 
         /* 👤 마이페이지 & 스탬프 빙고 구역 */
-        .mypage-panel { background: #fff; padding: 35px 25px; border-radius: 28px; box-shadow: var(--card-shadow); margin-top: 30px; border: 2px solid #f3f0ff; }
+        .mypage-panel { background: #fff; padding: 25px 15px; border-radius: 24px; box-shadow: var(--card-shadow); margin-top: 25px; border: 2px solid #eaddff; }
         
-        /* 📷 QR 스캐너 인터페이스 스타일 */
-        .qr-scanner-box { max-width: 400px; margin: 15px auto; border-radius: 20px; overflow: hidden; border: 3px dashed var(--primary-color); background: #fafafa; }
-        .scan-toggle-btn { background: var(--primary-color); color: white; border: none; padding: 12px 24px; border-radius: 14px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 25px auto; transition: 0.2s; box-shadow: 0 4px 12px rgba(125, 115, 230, 0.3); }
-        .scan-toggle-btn:hover { background: #685ec4; }
+        /* 📷 QR 스캐너 */
+        .qr-scanner-box { max-width: 100%; margin: 15px auto; border-radius: 16px; overflow: hidden; border: 3px dashed var(--primary-color); background: #fafafa; }
+        .scan-toggle-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 20px auto; transition: 0.2s; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
 
-        /* 🎨 파스텔톤 계란판 컨셉의 아기자기한 빙고판 */
-        .bingo-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 340px; margin: 25px auto; padding: 15px; background: #faf9fe; border-radius: 22px; border: 1px dashed #e4def2; }
-        .cell { width: 100px; height: 100px; background: white; border: 2px solid #ede9f5; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; position: relative; box-sizing: border-box; text-align: center; padding: 8px; transition: 0.2s; color: #5a5673; box-shadow: 0 4px 8px rgba(0,0,0,0.02); }
-        .cell.checked { background: #ffe4e1; border-color: #ffb7b2; color: #b05650; box-shadow: 0 6px 12px rgba(255, 183, 178, 0.4); }
-        .cell.checked::after { content: '🌸'; position: absolute; bottom: 6px; font-size: 13px; }
+        /* 🎨 모바일 화면 삐져나옴 원천 차단형 완벽 균등 마진 빙고판 */
+        .bingo-board { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            width: 100%;
+            max-width: 340px; 
+            margin: 20px auto; 
+            padding: 12px; 
+            background: #f7f5fd; 
+            border-radius: 20px; 
+            border: 1px dashed #d1c4e9;
+        }
+        .cell { 
+            aspect-ratio: 1 / 1; /* 가로세로 정비율 매칭으로 사각형 유지 */
+            width: 100%;
+            background: white; 
+            border: 2px solid #ede7f6; 
+            border-radius: 16px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 13px; 
+            position: relative; 
+            text-align: center; 
+            padding: 4px; 
+            transition: 0.2s; 
+            color: #4a4668; 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.02); 
+        }
+        @media (max-width: 360px) { .cell { font-size: 11px; } } /* 초소형 기기 글자 예외 보정 */
+
+        .cell.checked { background: #ffe3e8; border-color: var(--secondary-color); color: #c93b5d; box-shadow: 0 4px 10px rgba(255, 133, 162, 0.3); }
+        .cell.checked::after { content: '🌸'; position: absolute; bottom: 4px; font-size: 11px; }
         
-        .submit-btn { background: var(--mint-color); color: #3b7a66; border: none; padding: 15px; font-size: 16px; border-radius: 14px; cursor: pointer; width: 100%; max-width: 340px; margin: 15px auto; display: block; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 15px rgba(168, 230, 207, 0.3); }
-        .submit-btn:disabled { background: #e0ddf0; color: #a39eb8; cursor: not-allowed; box-shadow: none; }
+        .submit-btn { background: var(--mint-color); color: white; border: none; padding: 15px; font-size: 15px; border-radius: 14px; cursor: pointer; width: 100%; max-width: 340px; margin: 15px auto 0 auto; display: block; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 12px rgba(46, 213, 115, 0.3); }
+        .submit-btn:disabled { background: #dcd8f0; color: #9893b0; cursor: not-allowed; box-shadow: none; }
 
-        /* 🚨 일반 모달 팝업 디자인 및 부스 이미지 구역 추가 */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(59, 55, 89, 0.4); justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
-        .modal-content { background: white; padding: 35px 30px; border-radius: 28px; width: 90%; max-width: 420px; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.1); box-sizing: border-box; border: 1px solid #f0edf5; }
-        .modal-content h3 { color: var(--primary-color); margin-bottom: 20px; font-size: 22px; }
-        .modal-content input { width: 100%; padding: 13px; margin-bottom: 12px; border: 2px solid #f0edf5; border-radius: 12px; box-sizing: border-box; font-size: 15px; background: #faf9fc; }
-        .modal-content input:focus { border-color: var(--primary-color); outline: none; background: white; }
-        .close-btn { position: absolute; top: 18px; right: 22px; font-size: 28px; cursor: pointer; color: #ccc; transition: 0.2s; }
-        .close-btn:hover { color: #3b3759; }
-        .modal-booth-img { width: 100%; height: 190px; object-fit: cover; border-radius: 16px; margin-bottom: 18px; border: 3px solid var(--yellow-color); display: none; }
+        /* 🚨 모달 공통 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 52, 54, 0.5); justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 30px 20px; border-radius: 24px; width: 92%; max-width: 380px; position: relative; box-sizing: border-box; }
+        .modal-content h3 { color: var(--primary-color); margin-bottom: 15px; font-size: 20px; }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #eef2f5; border-radius: 10px; box-sizing: border-box; font-size: 15px; background: #faf9fc; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 26px; cursor: pointer; color: #bbb; }
+        .modal-booth-img { width: 100%; height: 170px; object-fit: cover; border-radius: 14px; margin-bottom: 15px; border: 3px solid var(--accent-color); display: none; }
     </style>
 </head>
 <body>
 
+<div id="loginGate" class="login-overlay">
+    <div class="login-box">
+        <h2>🎪 축제 입장 인증</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">등록된 학번과 이름을 입력해 주세요.</p>
+        <input type="number" id="studentId" placeholder="학번 (예: 10101)">
+        <input type="text" id="studentName" placeholder="이름 (예: 김건우)">
+        <button class="login-btn" onclick="checkAccess()">입장하기</button>
+    </div>
+</div>
+
 <div class="container">
     <div class="user-bar">
-        <h2 style="margin:0; font-size: 20px; display: flex; align-items: center; gap: 8px;">✨ 박람회 투어 패스</h2>
-        <div style="display: flex; align-items: center;">
-            <span id="userInfo" style="font-weight: bold; color: var(--primary-color); font-size: 15px;">인증 확인 중...</span>
+        <h2>🎪 동아리 박람회 안내</h2>
+        <div class="user-info-wrapper">
+            <span id="userInfo">확인 중...</span>
             <button class="logout-btn" onclick="logout()">로그아웃</button>
         </div>
     </div>
 
     <div class="top-section">
         <div class="info-panel">
-            <h3>📍 박람회 안내 지도</h3>
+            <h3>📍 행사 안내 지도</h3>
             <div class="map-container">
                 <img class="map-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=500&auto=format&fit=crop" alt="학교 전경">
             </div>
         </div>
         <div class="info-panel timetable">
-            <h3>🎨 박람회 타임테이블</h3>
-            <p><strong>08:30 - 09:00</strong> 🎪 축제 준비 및 부스 이동</p>
+            <h3>⏰ 행사 타임테이블</h3>
+            <p><strong>08:30 - 09:00</strong> 조회 및 박람회 부스 이동</p>
             <p><strong>09:00 - 10:40</strong> 🕒 박람회 운영 1타임</p>
             <p><strong>10:40 - 12:20</strong> 🕒 박람회 운영 2타임</p>
-            <p><strong>13:30 - 15:00</strong> 🕒 박람회 운영 3타임 (정리 포함)</p>
-            <p><strong>15:00 - 16:00</strong> 🔔 박람회 종합 골든벨!</p>
+            <p><strong>13:30 - 15:00</strong> 🕒 박람회 운영 3타임 (정리)</p>
+            <p><strong>15:00 - 16:00</strong> 🔔 동아리 박람회 골든벨</p>
         </div>
     </div>
 
@@ -186,16 +247,16 @@
     </div>
     
     <div class="booth-grid" id="boothContainer">
-        <div class="booth-card" onclick="handleCardClick(event, '로봇공학반', '드론 장애물 조종 경기와 미니 로봇 축구 게임을 직접 체험해 볼 수 있는 부스입니다! QR코드 키워드: robot', '2층 2-3교실', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=500&auto=format&fit=crop')">
+        <div class="booth-card" onclick="handleCardClick(event, '로봇공학반', '드론 장애물 조종 경기와 미니 로봇 축구 게임을 체험하는 부스입니다. QR 키워드: robot', '2층 2-3교실', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=500&auto=format&fit=crop')">
             <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
             <h3>로봇공학반</h3>
-            <p>🤖 로봇 축구 & 드론 레이싱 체험 경기</p>
+            <p>🤖 로봇 축구 & 드론 조종 레이싱 게임</p>
             <span class="loc">📍 2층 2-3교실</span>
         </div>
-        <div class="booth-card" onclick="handleCardClick(event, '실험과학반', '화려한 불꽃 반응 실험과 코끼리 치약 만들기 실험을 눈앞에서 실시간으로 관람하세요. QR코드 키워드: science', '과학실 1', 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=500&auto=format&fit=crop')">
+        <div class="booth-card" onclick="handleCardClick(event, '실험과학반', '화려한 불꽃 반응 실험과 코끼리 치약 만들기를 관람하세요. QR 키워드: science', '과학실 1', 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=500&auto=format&fit=crop')">
             <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
             <h3>실험과학반</h3>
-            <p>🧪 흥미진진한 화학 분수 반응 실험</p>
+            <p>🧪 눈이 즐거운 흥미진진 화학 실험 부스</p>
             <span class="loc">📍 과학실 1</span>
         </div>
     </div>
@@ -203,8 +264,8 @@
     <hr>
 
     <div class="mypage-panel">
-        <h2 style="text-align: center; margin-bottom: 5px;">🌸 스탬프 투어 3줄 빙고</h2>
-        <p style="text-align: center; color: #75728a; font-size: 14px; margin-top: 0;">부스의 QR코드를 스캔하면 예쁜 스탬프가 자동으로 날인됩니다!</p>
+        <h2 style="text-align: center; margin-bottom: 4px; font-size: 20px;">🌸 스탬프 투어 3줄 빙고</h2>
+        <p style="text-align: center; color: #615e78; font-size: 13px; margin-top: 0; padding: 0 10px;">부스에 배치된 QR코드를 인식하면 스탬프가 자동으로 찍힙니다!</p>
         
         <button class="scan-toggle-btn" id="scanCtrlBtn" onclick="toggleQRScanner()">📷 부스 QR 스캔 시작</button>
         <div class="qr-scanner-box">
@@ -222,20 +283,20 @@
             <div class="cell" id="b8" data-qr="drama">연극부</div>
             <div class="cell" id="b9" data-qr="book">도서반</div>
         </div>
-        <button class="submit-btn" id="submitBingo" disabled onclick="submitPrize()">🎁 상품 보상 신청 (3줄 완성 필요)</button>
+        <button class="submit-btn" id="submitBingo" disabled onclick="submitPrize()">🎁 보상 상품 교환 신청</button>
     </div>
 </div>
 
 <div id="addModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal('addModal')">&times;</span>
-        <h3>🎨 새 부스 기획/등록</h3>
+        <h3>🎨 새 부스 기획 등록</h3>
         <input type="text" id="newTitle" placeholder="부스 이름 (예: 컴퓨터반)">
-        <input type="text" id="newShort" placeholder="대표 한 줄 슬로건">
-        <input type="text" id="newLocation" placeholder="운영 장소 (예: 3층 멀티미디어실)">
-        <input type="text" id="newImgUrl" placeholder="📸 카드 일러스트 이미지 주소링크 (선택)">
-        <textarea id="newLong" placeholder="카드를 열었을 때 나타날 상세 동아리 활동 정보 안내" style="width:100%; height:90px; margin-bottom: 15px; border:2px solid #f0edf5; border-radius:12px; padding:12px; box-sizing:border-box; font-size:15px; font-family:inherit; background: #faf9fc; resize: none;"></textarea>
-        <button class="login-btn" onclick="addNewBooth()">부스 등록하기</button>
+        <input type="text" id="newShort" placeholder="간단한 슬로건">
+        <input type="text" id="newLocation" placeholder="운영 장소 위치">
+        <input type="text" id="newImgUrl" placeholder="📸 카드 이미지 링크 주소 (선택)">
+        <textarea id="newLong" placeholder="상세 활동 내용 안내 설명" style="width:100%; height:80px; margin-bottom: 12px; border:2px solid #eef2f5; border-radius:10px; padding:10px; box-sizing:border-box; font-size:14px; font-family:inherit; background: #faf9fc; resize: none;"></textarea>
+        <button class="login-btn" style="margin-top:0;" onclick="addNewBooth()">부스 등록하기</button>
     </div>
 </div>
 
@@ -244,13 +305,13 @@
         <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
         <img id="detailImg" class="modal-booth-img" src="" alt="부스 사진">
         <h3 id="detailTitle">부스 이름</h3>
-        <p id="detailDesc" style="margin: 15px 0; line-height: 1.6; color: #615e78; font-size: 15px;"></p>
-        <p style="color: var(--primary-color); font-weight: bold; margin: 0; font-size: 14px;"><span id="detailLoc"></span></p>
+        <p id="detailDesc" style="margin: 12px 0; line-height: 1.5; color: #4a4a4a; font-size: 14px;"></p>
+        <p style="color: var(--primary-color); font-weight: bold; margin: 0; font-size: 13px;"><span id="detailLoc"></span></p>
     </div>
 </div>
 
 <script>
-    // 🔐 관리자 지정 출입 허용 고유 식별 명단 내부 DB
+    // 🔐 관리자 화이트리스트 지정 명단
     const allowedStudents = {
         "10101": "김건우",
         "20515": "신어진",
@@ -260,11 +321,14 @@
 
     let html5QrcodeScanner = null;
 
+    // 🚀 자동 로그인 제어 버그 완벽 트래킹 차단 처리
     window.onload = function() {
         if (localStorage.getItem('isLoggedIn') === 'true') {
             openMainPage();
         } else {
+            localStorage.clear(); 
             document.getElementById('loginGate').style.display = 'flex';
+            document.getElementById('userInfo').innerText = "로그인 필요";
         }
     }
 
@@ -277,23 +341,23 @@
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('studentId', stringId);
             localStorage.setItem('studentName', name);
-            alert(`반가워요, ${name}님! 인증되었습니다 ✨`);
+            alert(`반가워요, ${name}님! 인증 처리되었습니다 ✨`);
             openMainPage();
         } else {
-            alert("등록된 정보와 일치하지 않습니다. 학번 혹은 이름을 확인하세요!");
+            alert("명단에 등록된 학번과 이름 정보가 일치하지 않습니다.");
         }
     }
 
     function logout() {
         if(html5QrcodeScanner) { stopScanner(); }
         localStorage.clear();
-        alert("로그아웃 되었습니다. 축제 패스를 종료합니다.");
+        alert("로그아웃 되었습니다.");
         location.reload();
     }
 
     function openMainPage() {
         document.getElementById('loginGate').style.display = 'none';
-        document.getElementById('userInfo').innerText = `👋 ${localStorage.getItem('studentName')} (${localStorage.getItem('studentId')})`;
+        document.getElementById('userInfo').innerText = `${localStorage.getItem('studentName')}(${localStorage.getItem('studentId')})`;
         loadSavedStamps();
     }
 
@@ -332,7 +396,7 @@
         const imgUrl = document.getElementById('newImgUrl').value.trim();
         const long = document.getElementById('newLong').value.trim();
 
-        if(!title || !loc) return alert('부스 이름과 위치는 필수 입력 사항입니다!');
+        if(!title || !loc) return alert('부스 이름과 위치는 필수 입력 사안입니다!');
 
         const card = document.createElement('div');
         card.className = 'booth-card';
@@ -341,7 +405,7 @@
         card.innerHTML = `
             <button class="fav-btn" onclick="toggleFavorite(event, this)">☆</button>
             <h3>${title}</h3>
-            <p>${short || '파스텔빛 재미가 가득한 축제 부스'}</p>
+            <p>${short || '즐거움이 가득한 축제 부스 체험'}</p>
             <span class="loc">📍 ${loc}</span>
         `;
         document.getElementById('boothContainer').appendChild(card);
@@ -357,8 +421,8 @@
     function toggleQRScanner() {
         const btn = document.getElementById('scanCtrlBtn');
         if (!html5QrcodeScanner) {
-            btn.innerText = "🛑 스캐너 시스템 끄기";
-            btn.style.background = "#ff9aa2";
+            btn.innerText = "🛑 스캐너 시스템 종료";
+            btn.style.background = "var(--secondary-color)";
             startScanner();
         } else {
             btn.innerText = "📷 부스 QR 스캔 시작";
@@ -369,7 +433,7 @@
 
     function startScanner() {
         html5QrcodeScanner = new Html5Qrcode("qr-reader");
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        const config = { fps: 10, qrbox: { width: 230, height: 230 } };
         
         html5QrcodeScanner.start(
             { facingMode: "environment" }, 
@@ -377,7 +441,7 @@
             onScanSuccess
         ).catch(err => {
             console.error(err);
-            alert("카메라 연결 실패! 기기 권한 환경을 체크하세요.");
+            alert("카메라 권한 거부 또는 연결 실패! 환경 설정을 점검해 주세요.");
             toggleQRScanner();
         });
     }
@@ -407,13 +471,13 @@
                 savedStamps.push(cellId);
                 localStorage.setItem('myStamps', JSON.stringify(savedStamps));
                 loadSavedStamps();
-                const cellName = targetCell.innerText.replace('✔️', '').replace('🌸', '').trim();
-                alert(`🌸 [${cellName}] 스탬프가 매칭 보드에 찍혔습니다!`);
+                const cellName = targetCell.innerText.replace('🌸', '').trim();
+                alert(`🌸 [${cellName}] 스탬프 매칭 및 적립이 완료되었습니다!`);
             } else {
-                alert("이미 획득 완료 처리된 스탬프 패스입니다.");
+                alert("이미 스탬프가 찍혀있는 부스 보드입니다.");
             }
         } else {
-            alert(`매칭 실패: [${scannedValue}] 키워드의 동아리가 보드에 없습니다.`);
+            alert(`매칭 에러: [${scannedValue}]에 해당하는 동아리 칸이 보드에 없습니다.`);
         }
     }
 
@@ -447,18 +511,17 @@
         if (lines >= 3) {
             btn.removeAttribute('disabled');
             btn.style.background = 'var(--mint-color)';
-            btn.style.color = '#3b7a66';
-            btn.innerText = "🎁 축제 보상 상품 교환하기 (달성 완료)";
+            btn.innerText = "🎁 보상 상품 교환하기 (달성 완료!)";
         } else {
             btn.setAttribute('disabled', 'true');
-            btn.innerText = `🎁 상품 교환하기 (${lines}/3 완성)`;
+            btn.innerText = `🎁 상품 교환하기 (${lines}/3 줄 완성)`;
         }
     }
 
     function submitPrize() {
         const name = localStorage.getItem('studentName');
         const id = localStorage.getItem('studentId');
-        alert(`🎉 [교환 접수 확인]\n학번: ${id}\n이름: ${name}\n축제 부스 운영 부스에 가셔서 상품을 수령하세요!`);
+        alert(`🎉 [상품 교환 접수 완료]\n학번: ${id}\n이름: ${name}\n운영 본부석에서 확인 후 상품을 수령하세요!`);
     }
 </script>
 </body>
