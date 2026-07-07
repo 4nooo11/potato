@@ -4,58 +4,58 @@
     <meta charset="UTF-8">
     <title>동아리 박람회</title>
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f9; }
-        /* 메뉴를 상단에 고정 */
-        nav { background: #333; padding: 15px; display: flex; justify-content: space-around; }
-        nav button { background: none; border: none; color: white; font-size: 16px; cursor: pointer; }
-        nav button:hover { color: #ff6b6b; }
+        body { font-family: sans-serif; text-align: center; background: #f4f4f9; padding: 20px; }
+        .menu-container { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto; }
+        .menu-btn { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; border: none; font-size: 18px; font-weight: bold; }
         
-        .content { padding: 20px; display: none; }
+        .page { display: none; background: white; padding: 20px; border-radius: 15px; margin-top: 20px; max-width: 400px; margin: 20px auto; }
         .active { display: block; }
         
-        /* 부스 카드 스타일 */
-        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .booth-item { border-bottom: 1px solid #eee; padding: 10px; cursor: pointer; text-align: left; }
+        .back-btn { margin-top: 20px; padding: 10px; background: #333; color: white; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <button onclick="showPage('booth')">부스안내</button>
-        <button onclick="showPage('map')">지도</button>
-        <button onclick="showPage('stamp')">스탬프/빙고</button>
-        <button onclick="showPage('my')">마이페이지</button>
-    </nav>
+    <div id="main-menu" class="page active">
+        <h1>동아리 박람회</h1>
+        <div class="menu-container">
+            <button class="menu-btn" onclick="showPage('booth-list')">부스 안내</button>
+            <button class="menu-btn" onclick="showPage('map')">지도</button>
+            <button class="menu-btn" onclick="showPage('stamp')">스탬프/빙고</button>
+            <button class="menu-btn" onclick="showPage('my')">마이페이지</button>
+        </div>
+    </div>
 
-    <div id="booth" class="content active">
+    <div id="booth-list" class="page">
         <h1>부스 안내</h1>
-        <div class="card">
-            <h3>로봇 동아리</h3>
-            <p>설명: 드론 조종 및 로봇 제작 체험</p>
-        </div>
-        <div class="card">
-            <h3>요리 동아리</h3>
-            <p>설명: 간단한 디저트 만들기 체험</p>
-        </div>
+        <div class="booth-item" onclick="showPage('booth-1')">로봇 동아리 ></div>
+        <div class="booth-item" onclick="showPage('booth-2')">요리 동아리 ></div>
+        <div class="back-btn" onclick="showPage('main-menu')">뒤로가기</div>
     </div>
 
-    <div id="map" class="content">
-        <h1>박람회 지도</h1>
-        <p>여기에 학교 지도 이미지를 넣을 예정입니다.</p>
+    <div id="booth-1" class="page">
+        <h1>로봇 동아리</h1>
+        <p>설명: 드론 조종 및 로봇 제작을 체험해보세요!</p>
+        <button>⭐ 즐겨찾기</button>
+        <div class="back-btn" onclick="showPage('booth-list')">목록으로</div>
     </div>
 
-    <div id="stamp" class="content">
-        <h1>QR 스탬프 & 빙고</h1>
-        <p>QR 코드를 스캔하여 빙고를 완성하세요!</p>
+    <div id="booth-2" class="page">
+        <h1>요리 동아리</h1>
+        <p>설명: 맛있는 디저트를 직접 만들어봐요.</p>
+        <button>⭐ 즐겨찾기</button>
+        <div class="back-btn" onclick="showPage('booth-list')">목록으로</div>
     </div>
 
-    <div id="my" class="content">
-        <h1>마이페이지</h1>
-        <p>내가 방문한 부스와 즐겨찾기 목록이 표시됩니다.</p>
+    <div id="map" class="page">
+        <h1>지도</h1>
+        <div class="back-btn" onclick="showPage('main-menu')">뒤로가기</div>
     </div>
 
     <script>
         function showPage(pageId) {
-            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
     </script>
