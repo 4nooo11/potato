@@ -6,20 +6,20 @@
     <title>🎪 동아리 박람회 종합 안내</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        /* 🎨 선명하고 생기 있는 진한 파스텔톤 축제 테마 정의 */
+        /* 🎨 핑크, 노랑, 보라 무드의 선명한 파스텔톤 테마로 전면 교체 */
         :root {
-            --primary-color: #6c5ce7;       /* 진한 라벤더 퍼플 */
-            --secondary-color: #ff85a2;     /* 달콤한 파스텔 핫핑크 */
-            --accent-color: #ffbe76;        /* 진한 파스텔 오렌지 */
-            --mint-color: #2ed573;          /* 선명한 파스텔 그린 */
-            --yellow-color: #ffca28;        /* 생생한 진한 옐로우 */
-            --bg-gradient: linear-gradient(135deg, #ede7f6 0%, #e8f5e9 100%);
-            --card-shadow: 0 8px 20px rgba(108, 92, 231, 0.12);
-            --hover-shadow: 0 12px 28px rgba(108, 92, 231, 0.22);
+            --primary-color: #8c7ae6;       /* 부드러운 파스텔 보라 */
+            --secondary-color: #ff85a2;     /* 달콤한 솜사탕 핑크 */
+            --accent-color: #ffce54;        /* 화사한 바닐라 노랑 */
+            --mint-color: #2ed573;          /* 상품 버튼용 파스텔 그린 */
+            /* 🌸 배경을 보라 -> 노랑 -> 핑크로 이어지는 환상적인 파스텔 톤으로 변경 */
+            --bg-gradient: linear-gradient(135deg, #f3ecf9 0%, #fef9e7 50%, #fff0f3 100%);
+            --card-shadow: 0 8px 22px rgba(140, 122, 230, 0.12);
+            --hover-shadow: 0 14px 30px rgba(255, 133, 162, 0.22);
         }
 
         * {
-            box-sizing: border-box; /* 모바일 삐져나옴 방지 기본막 */
+            box-sizing: border-box;
         }
 
         body { 
@@ -32,47 +32,55 @@
         }
 
         .container { max-width: 1100px; margin: 0 auto; padding-bottom: 50px; }
-        h1, h2, h3 { margin-top: 0; color: #3b3759; font-weight: 700; }
+        h1, h2, h3 { margin-top: 0; color: #433e6b; font-weight: 700; }
         hr { border: 0; height: 3px; background: dotted var(--secondary-color); margin: 35px 0; width: 60%; margin-left: auto; margin-right: auto; }
 
-        /* 🔐 로그인 모달 팝업 */
+        /* 🔐 로그인 모달 팝업 (보라와 핑크 그라데이션) */
         .login-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(255, 133, 162, 0.95)); 
+            background: linear-gradient(135deg, rgba(140, 122, 230, 0.96), rgba(255, 133, 162, 0.96)); 
             display: flex; justify-content: center; align-items: center; z-index: 9999; 
         }
         .login-box { 
-            background: white; padding: 35px 25px; border-radius: 24px; 
+            background: white; padding: 35px 25px; border-radius: 26px; 
             width: 90%; max-width: 360px; text-align: center; 
             box-shadow: 0 20px 45px rgba(0,0,0,0.15); 
         }
-        .login-box h2 { color: var(--primary-color); margin-bottom: 10px; font-size: 24px; }
+        .login-box h2 { color: var(--primary-color); margin-bottom: 8px; font-size: 24px; }
         .login-box input { 
             width: 100%; padding: 14px; margin: 8px 0; 
-            border: 2px solid #eef2f5; border-radius: 12px; box-sizing: border-box; 
-            font-size: 16px; transition: 0.3s; background-color: #faf9fc;
+            border: 2px solid #f5effa; border-radius: 12px; box-sizing: border-box; 
+            font-size: 16px; transition: 0.3s; background-color: #faf8fc;
         }
         .login-box input:focus { border-color: var(--primary-color); outline: none; background-color: #fff; }
+        .login-btn { 
+            width: 100%; padding: 14px; background: var(--primary-color); color: white; 
+            border: none; border-radius: 12px; font-size: 16px; font-weight: bold; 
+            cursor: pointer; transition: 0.3s; margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(140, 122, 230, 0.3);
+        }
+        .login-btn:hover { background: #7666ca; transform: translateY(-2px); }
 
-        /* 👤 상단 유저 정보 바 (모바일 글자 겹침 버그 완벽 수정) */
+        /* 👤 상단 유저 정보 바 (동아리 박람회 안내) */
         .user-bar { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            background: rgba(255, 255, 255, 0.9); 
+            background: rgba(255, 255, 255, 0.92); 
             backdrop-filter: blur(10px);
-            padding: 14px 16px; 
-            border-radius: 18px; 
+            padding: 14px 18px; 
+            border-radius: 20px; 
             margin-bottom: 20px; 
             box-shadow: var(--card-shadow); 
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             gap: 10px;
         }
         .user-bar h2 { 
-            font-size: 17px; 
+            font-size: 18px; 
             white-space: nowrap; 
             margin: 0;
             flex-shrink: 0;
+            color: #433e6b;
         }
         .user-info-wrapper {
             display: flex;
@@ -91,10 +99,10 @@
             text-overflow: ellipsis;
         }
         .logout-btn {
-            background: var(--secondary-color); color: white; border: none; padding: 8px 12px;
+            background: var(--secondary-color); color: white; border: none; padding: 8px 14px;
             border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: bold;
             transition: 0.2s; white-space: nowrap; flex-shrink: 0;
-            box-shadow: 0 3px 8px rgba(255, 133, 162, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 133, 162, 0.3);
         }
         .logout-btn:hover { background: #e06c87; }
 
@@ -103,57 +111,57 @@
         @media (max-width: 768px) { .top-section { grid-template-columns: 1fr; } }
          
         .info-panel { 
-            background: white; padding: 22px; border-radius: 22px; box-shadow: var(--card-shadow); 
-            box-sizing: border-box; border: 1px solid rgba(255, 255, 255, 0.6);
+            background: white; padding: 22px; border-radius: 24px; box-shadow: var(--card-shadow); 
+            box-sizing: border-box; border: 1px solid rgba(255, 255, 255, 0.7);
         }
-        .info-panel h3 { display: flex; align-items: center; gap: 6px; font-size: 18px; border-bottom: 2px solid #f1ebfa; padding-bottom: 8px; margin-bottom: 12px; }
-        .map-container { position: relative; border-radius: 14px; overflow: hidden; border: 3px solid var(--accent-color); }
+        .info-panel h3 { display: flex; align-items: center; gap: 6px; font-size: 18px; border-bottom: 2px solid #f5effa; padding-bottom: 8px; margin-bottom: 12px; color: #433e6b; }
+        .map-container { position: relative; border-radius: 16px; overflow: hidden; border: 3px solid var(--accent-color); }
         .map-img { width: 100%; height: auto; max-height: 250px; display: block; object-fit: cover; }
         
-        .timetable p { padding: 12px 6px; border-bottom: 1px dashed #ede9f5; margin: 0; font-size: 14px; display: flex; align-items: center; }
+        .timetable p { padding: 12px 6px; border-bottom: 1px dashed #f5effa; margin: 0; font-size: 14px; display: flex; align-items: center; color: #555; }
         .timetable p:last-child { border-bottom: none; }
         .timetable p strong { color: white; background: var(--primary-color); padding: 3px 8px; border-radius: 6px; margin-right: 10px; font-size: 12px; white-space: nowrap; }
 
         /* 🎪 하단 부스 섹션 */
         .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-        .section-title h2 { display: flex; align-items: center; gap: 6px; font-size: 20px; margin: 0; }
+        .section-title h2 { display: flex; align-items: center; gap: 6px; font-size: 20px; margin: 0; color: #433e6b; }
         .add-btn { 
-            background: var(--mint-color); color: white; border: none; 
+            background: var(--secondary-color); color: white; border: none; 
             width: 42px; height: 42px; border-radius: 12px; cursor: pointer; 
             font-size: 22px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 10px rgba(46, 213, 115, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 133, 162, 0.3);
         }
          
         .booth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
         
-        /* 🎨 옆면에 선명한 파스텔 포인트 칼라 세로 선 카드 */
+        /* 🎨 옆면에 핑크, 노랑, 보라 포인트 바를 넣은 카드 디자인 */
         .booth-card { 
             background: white; padding: 20px 20px 20px 26px; border-radius: 18px; box-shadow: var(--card-shadow); 
             position: relative; cursor: pointer; transition: all 0.2s ease; 
             border: 1px solid rgba(255,255,255,0.8); overflow: hidden;
         }
         .booth-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary-color);
+            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary-color); /* 보라 바 */
         }
-        .booth-grid .booth-card:nth-child(even)::before { background: var(--secondary-color); }
-        .booth-grid .booth-card:nth-child(3n)::before { background: var(--yellow-color); }
+        .booth-grid .booth-card:nth-child(even)::before { background: var(--secondary-color); } /* 핑크 바 */
+        .booth-grid .booth-card:nth-child(3n)::before { background: var(--accent-color); }    /* 노랑 바 */
         
         .booth-card:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
-        .booth-card h3 { margin: 0 0 6px 0; padding-right: 30px; font-size: 18px; color: #3b3759; }
+        .booth-card h3 { margin: 0 0 6px 0; padding-right: 30px; font-size: 18px; color: #433e6b; }
         .booth-card p { margin: 4px 0; color: #615e78; font-size: 14px; line-height: 1.4; }
         .booth-card .loc { background: #fff2f5; color: #e05275; font-weight: bold; font-size: 12px; display: inline-block; margin-top: 8px; padding: 4px 8px; border-radius: 6px; border: 1px dashed #ffb3c6; }
          
-        .fav-btn { position: absolute; top: 18px; right: 18px; background: none; border: none; font-size: 20px; cursor: pointer; color: #dddaeb; padding: 0; z-index: 10; }
-        .fav-btn.active { color: var(--yellow-color); }
+        .fav-btn { position: absolute; top: 18px; right: 18px; background: none; border: none; font-size: 20px; cursor: pointer; color: #e2def2; padding: 0; z-index: 10; }
+        .fav-btn.active { color: var(--accent-color); }
 
         /* 👤 마이페이지 & 스탬프 빙고 구역 */
-        .mypage-panel { background: #fff; padding: 25px 15px; border-radius: 24px; box-shadow: var(--card-shadow); margin-top: 25px; border: 2px solid #eaddff; }
+        .mypage-panel { background: #fff; padding: 25px 15px; border-radius: 26px; box-shadow: var(--card-shadow); margin-top: 25px; border: 2px solid #f1ebfa; }
         
-        /* 📷 QR 스캐너 */
+        /* 📷 QR 스캐너 박스 */
         .qr-scanner-box { max-width: 100%; margin: 15px auto; border-radius: 16px; overflow: hidden; border: 3px dashed var(--primary-color); background: #fafafa; }
-        .scan-toggle-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 20px auto; transition: 0.2s; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
+        .scan-toggle-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 20px auto; transition: 0.2s; box-shadow: 0 4px 10px rgba(140, 122, 230, 0.3); }
 
-        /* 🎨 모바일 화면 삐져나옴 원천 차단형 완벽 균등 마진 빙고판 */
+        /* 🎨 모바일 화면에 완벽하게 핏되는 정비율 파스텔 빙고판 */
         .bingo-board { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -162,15 +170,15 @@
             max-width: 340px; 
             margin: 20px auto; 
             padding: 12px; 
-            background: #f7f5fd; 
+            background: #faf5ff; 
             border-radius: 20px; 
-            border: 1px dashed #d1c4e9;
+            border: 1px dashed #e2def2;
         }
         .cell { 
-            aspect-ratio: 1 / 1; /* 가로세로 정비율 매칭으로 사각형 유지 */
+            aspect-ratio: 1 / 1; 
             width: 100%;
             background: white; 
-            border: 2px solid #ede7f6; 
+            border: 2px solid #f1ebfa; 
             border-radius: 16px; 
             display: flex; 
             justify-content: center; 
@@ -181,32 +189,32 @@
             text-align: center; 
             padding: 4px; 
             transition: 0.2s; 
-            color: #4a4668; 
+            color: #534e7a; 
             box-shadow: 0 3px 6px rgba(0,0,0,0.02); 
         }
-        @media (max-width: 360px) { .cell { font-size: 11px; } } /* 초소형 기기 글자 예외 보정 */
+        @media (max-width: 360px) { .cell { font-size: 11px; } }
 
-        .cell.checked { background: #ffe3e8; border-color: var(--secondary-color); color: #c93b5d; box-shadow: 0 4px 10px rgba(255, 133, 162, 0.3); }
+        .cell.checked { background: #ffe6ec; border-color: var(--secondary-color); color: #c93b5d; box-shadow: 0 4px 10px rgba(255, 133, 162, 0.3); }
         .cell.checked::after { content: '🌸'; position: absolute; bottom: 4px; font-size: 11px; }
         
         .submit-btn { background: var(--mint-color); color: white; border: none; padding: 15px; font-size: 15px; border-radius: 14px; cursor: pointer; width: 100%; max-width: 340px; margin: 15px auto 0 auto; display: block; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 12px rgba(46, 213, 115, 0.3); }
-        .submit-btn:disabled { background: #dcd8f0; color: #9893b0; cursor: not-allowed; box-shadow: none; }
+        .submit-btn:disabled { background: #e2def2; color: #a5a0bd; cursor: not-allowed; box-shadow: none; }
 
-        /* 🚨 모달 공통 */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 52, 54, 0.5); justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); }
+        /* 🚨 모달 구조 정의 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(59, 55, 89, 0.4); justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); }
         .modal-content { background: white; padding: 30px 20px; border-radius: 24px; width: 92%; max-width: 380px; position: relative; box-sizing: border-box; }
         .modal-content h3 { color: var(--primary-color); margin-bottom: 15px; font-size: 20px; }
-        .modal-content input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #eef2f5; border-radius: 10px; box-sizing: border-box; font-size: 15px; background: #faf9fc; }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #f5effa; border-radius: 10px; box-sizing: border-box; font-size: 15px; background: #faf8fc; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 26px; cursor: pointer; color: #bbb; }
         .modal-booth-img { width: 100%; height: 170px; object-fit: cover; border-radius: 14px; margin-bottom: 15px; border: 3px solid var(--accent-color); display: none; }
     </style>
 </head>
 <body>
 
-<div id="loginGate" class="login-overlay">
+<div id="loginGate" class="login-overlay" style="display: none;">
     <div class="login-box">
         <h2>🎪 축제 입장 인증</h2>
-        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">등록된 학번과 이름을 입력해 주세요.</p>
+        <p style="color: #615e78; font-size: 14px; margin-bottom: 20px;">등록된 학번과 이름을 입력해 주세요.</p>
         <input type="number" id="studentId" placeholder="학번 (예: 10101)">
         <input type="text" id="studentName" placeholder="이름 (예: 김건우)">
         <button class="login-btn" onclick="checkAccess()">입장하기</button>
@@ -217,7 +225,7 @@
     <div class="user-bar">
         <h2>🎪 동아리 박람회 안내</h2>
         <div class="user-info-wrapper">
-            <span id="userInfo">확인 중...</span>
+            <span id="userInfo">인증 확인 중...</span>
             <button class="logout-btn" onclick="logout()">로그아웃</button>
         </div>
     </div>
@@ -295,7 +303,7 @@
         <input type="text" id="newShort" placeholder="간단한 슬로건">
         <input type="text" id="newLocation" placeholder="운영 장소 위치">
         <input type="text" id="newImgUrl" placeholder="📸 카드 이미지 링크 주소 (선택)">
-        <textarea id="newLong" placeholder="상세 활동 내용 안내 설명" style="width:100%; height:80px; margin-bottom: 12px; border:2px solid #eef2f5; border-radius:10px; padding:10px; box-sizing:border-box; font-size:14px; font-family:inherit; background: #faf9fc; resize: none;"></textarea>
+        <textarea id="newLong" placeholder="상세 활동 내용 안내 설명" style="width:100%; height:80px; margin-bottom: 12px; border:2px solid #f5effa; border-radius:10px; padding:10px; box-sizing:border-box; font-size:14px; font-family:inherit; background: #faf8fc; resize: none;"></textarea>
         <button class="login-btn" style="margin-top:0;" onclick="addNewBooth()">부스 등록하기</button>
     </div>
 </div>
@@ -311,7 +319,7 @@
 </div>
 
 <script>
-    // 🔐 관리자 화이트리스트 지정 명단
+    // 🔐 관리자 명단 데이터베이스
     const allowedStudents = {
         "10101": "김건우",
         "20515": "신어진",
@@ -321,14 +329,20 @@
 
     let html5QrcodeScanner = null;
 
-    // 🚀 자동 로그인 제어 버그 완벽 트래킹 차단 처리
+    // 🚀 데이터 상태 판정 버그 수정 
     window.onload = function() {
-        if (localStorage.getItem('isLoggedIn') === 'true') {
+        const loggedIn = localStorage.getItem('isLoggedIn');
+        const sId = localStorage.getItem('studentId');
+        const sName = localStorage.getItem('studentName');
+
+        // 정보가 완벽히 다 존재할 때만 자동 로그인 통과
+        if (loggedIn === 'true' && sId && sName && allowedStudents[sId] === sName) {
             openMainPage();
         } else {
-            localStorage.clear(); 
+            // 기록이 없거나 꼬여있으면 깨끗이 비우고 로그인 화면 무조건 열기
+            localStorage.clear();
             document.getElementById('loginGate').style.display = 'flex';
-            document.getElementById('userInfo').innerText = "로그인 필요";
+            document.getElementById('userInfo').innerText = "인증 필요";
         }
     }
 
