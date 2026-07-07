@@ -2,36 +2,61 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>동아리 박람회</title>
     <style>
-        /* 디자인 영역 */
-        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
-        .booth { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 2px 2px 5px #ccc; }
-        button { background: #ff6b6b; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
-        h1 { text-align: center; color: #333; }
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f9; }
+        /* 메뉴를 상단에 고정 */
+        nav { background: #333; padding: 15px; display: flex; justify-content: space-around; }
+        nav button { background: none; border: none; color: white; font-size: 16px; cursor: pointer; }
+        nav button:hover { color: #ff6b6b; }
+        
+        .content { padding: 20px; display: none; }
+        .active { display: block; }
+        
+        /* 부스 카드 스타일 */
+        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-    <h1>동아리 박람회</h1>
+    <nav>
+        <button onclick="showPage('booth')">부스안내</button>
+        <button onclick="showPage('map')">지도</button>
+        <button onclick="showPage('stamp')">스탬프/빙고</button>
+        <button onclick="showPage('my')">마이페이지</button>
+    </nav>
 
-    <div id="booth-list">
-        <div class="booth">
+    <div id="booth" class="content active">
+        <h1>부스 안내</h1>
+        <div class="card">
             <h3>로봇 동아리</h3>
             <p>설명: 드론 조종 및 로봇 제작 체험</p>
-            <button onclick="addFavorite('로봇 동아리')">⭐ 즐겨찾기</button>
         </div>
-        <div class="booth">
+        <div class="card">
             <h3>요리 동아리</h3>
             <p>설명: 간단한 디저트 만들기 체험</p>
-            <button onclick="addFavorite('요리 동아리')">⭐ 즐겨찾기</button>
         </div>
     </div>
 
+    <div id="map" class="content">
+        <h1>박람회 지도</h1>
+        <p>여기에 학교 지도 이미지를 넣을 예정입니다.</p>
+    </div>
+
+    <div id="stamp" class="content">
+        <h1>QR 스탬프 & 빙고</h1>
+        <p>QR 코드를 스캔하여 빙고를 완성하세요!</p>
+    </div>
+
+    <div id="my" class="content">
+        <h1>마이페이지</h1>
+        <p>내가 방문한 부스와 즐겨찾기 목록이 표시됩니다.</p>
+    </div>
+
     <script>
-        function addFavorite(name) {
-            alert(name + " 동아리가 즐겨찾기에 추가되었습니다!");
+        function showPage(pageId) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
         }
     </script>
 </body>
