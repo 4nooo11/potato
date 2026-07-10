@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 박람회</title>
+    <link class="stylesheet" href="style.css">
+</head>
+<body class="main-bady">
+
+    <div class="user-info" id="userInfo">로딩 중...</div>
+    
+    <h1 class="main-title">동아리 박람회</h1>
+
+    <div class="timetable">
+        <h3>시간표</h3>
+        <div class="table-row"><span>08:30 ~ 09:00</span><span>조회, 부스 이동, 준비</span></div>
+        <div class="table-row"><span>09:00 ~ 10:40</span><span>부스운영 1타임</span></div>
+        <div class="table-row"><span>10:40 ~ 12:20</span><span>부스운영 2타임</span></div>
+        <div class="table-row"><span>13:30 ~ 15:00</span><span>부스운영 3타임 (정리포함)</span></div>
+        <div class="table-row"><span>15:00 ~ 16:00</span><span>동아리박람회 골든벨</span></div>
+        <div class="table-row"><span>16:00 ~ 16:30</span><span>교실 이동, 정리, 종례</span></div>
+    </div>
+
+    <div class="menu-container">
+        <button class="menu-btn" onclick="openPage('booth.html')">부스 안내</button>
+        <button class="menu-btn" onclick="openPage('stamp.html')">스템프</button>
+        <button class="menu-btn" onclick="openPage('map.html')">배치도</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        checkLoginAndDisplay();
+    </script>
+</body>
+</html>

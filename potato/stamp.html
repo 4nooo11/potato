@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스탬프</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body class="sub-body stamp-bg">
+    <h1>스탬프 빙고</h1>
+        <p>부스 체험 후 QR 코드를 찍으세요! 3빙고 완성 시 본부 부스 혜택이 주어집니다.</p>
+    
+    <div class="sub-container">
+        <div class="bingo-board" id="bingoBoard"></div>
+        <div class="bingo-result" id="bingoResult">현재 0 빙고! 🎉</div>
+    </div>
+
+    <div class="sub-container" id="submitArea" style="text-align: center; display: none;">
+        <button id="submitBtn" class="login-btn" onclick="submitBingo()" style="background-color: #e74c3c; font-size: 18px; padding: 15px;">3빙고 달성! 명단 제출하기</button>
+    </div>
+
+    <div class="sub-container" style="text-align: center;">
+        <button class="login-btn" onclick="startQRScanner()" style="margin-bottom: 15px; background-color: #2ecc71;">QR 코드 스캔하기</button>
+        <div id="reader" style="width: 100%; max-width: 400px; margin: 0 auto; display: none;"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>renderBingo();</script>
+</body>
+</html>

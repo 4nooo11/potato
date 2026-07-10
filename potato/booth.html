@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부스 안내</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="sub-body booth-bg">
+    <h1>동아리 부스 안내</h1>
+
+    <div class="filter-tabs">
+        <button id="btnAll" class="tab-btn active" onclick="changeTab('all')">전체 부스</button>
+        <button id="btnFav" class="tab-btn" onclick="changeTab('fav')">즐겨찾기</button>
+    </div>
+
+    <div id="boothContainer" class="sub-container">
+        </div>
+
+    <script src="script.js"></script>
+    <script>
+        reberBooths('all');
+    </script>
+</body>
+</html>

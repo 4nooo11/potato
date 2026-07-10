@@ -1,0 +1,88 @@
+/* 공통 스타일 디자인 */
+body {
+    font-family: 'Malgun Gothic', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* 로그인 화면 */
+.login-container {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.login-container h2 { margin-bottom: 24px; color: #4A90E2; }
+.login-container input {
+    width: 100%; padding: 12px; margin-bottom: 12px;
+    border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;
+}
+.login-btn {
+    width: 100%; padding: 12px; background-color: #4A90E2; color: white;
+    border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold;
+}
+
+/* 메인 화면 */
+.main-body { padding: 20px; text-align: center; }
+.user-info { text-align: right; font-size: 15px; font-weight: bold; margin-bottom: 15px; color: #555; }
+.main-title { font-size: 32px; margin-bottom: 25px; }
+.timetable {
+    background: white; padding: 20px; border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); max-width: 500px; margin: 0 auto 30px auto; text-align: left;
+}
+.timetable h3 { margin-top: 0; color: #4A90E2; text-align: center; }
+.table-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+.menu-container { display: flex; flex-direction: column; gap: 15px; max-width: 500px; margin: 0 auto; }
+.menu-btn {
+    background: white; border: 2px solid #4A90E2; border-radius: 12px;
+    padding: 22px; font-size: 18px; font-weight: bold; color: #4A90E2; cursor: pointer; transition: 0.2s;
+}
+.menu-btn:hover { background: #4A90E2; color: white; }
+
+/* 서브 페이지 기본 공통 레이아웃 */
+.sub-body { padding: 30px 20px; text-align: center; }
+.sub-container {
+    background: white; max-width: 600px; margin: 20px auto; padding: 20px;
+    border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left;
+}
+.booth-bg { background-color: #fff5f5; }
+.stamp-bg { background-color: #f0fff4; }
+.map-bg { background-color: #f0f7ff; }
+
+/* 부스 안내용 탭 & 리스트 디자인 */
+.filter-tabs { margin-bottom: 20px; }
+.tab-btn { padding: 10px 25px; border: none; background: #ddd; cursor: pointer; border-radius: 20px; margin: 0 5px; }
+.tab-btn.active { background: #4A90E2; color: white; font-weight: bold; }
+.booth-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+.booth-info h3 { margin: 0 0 5px 0; font-size: 17px; color: #2c3e50; }
+.booth-info .loc { font-size: 13px; color: #4A90E2; font-weight: bold; }
+.fav-btn { background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; }
+.fav-btn.active { color: #f1c40f; }
+
+/* 3x3 원형 스탬프 빙고판 디자인 */
+.bingo-board {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 15px; max-width: 360px; margin: 20px auto;
+}
+.bingo-cell {
+    background: #ffffff; border: 2px dashed #b2bec3; border-radius: 50%;
+    aspect-ratio: 1 / 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 12px;
+    font-weight: bold; color: #2d3436; position: relative; text-align: center; box-sizing: border-box;
+}
+.req-badge {
+    position: absolute; top: 6px; background-color: #d63031;
+    color: white; font-size: 8px; padding: 1px 5px; border-radius: 10px;
+}
+.bingo-cell.active { background: #edf7ed; border: 2px solid #2ecc71; color: #1b5e20; }
+.bingo-cell .status { font-size: 18px; margin-top: 3px; }
+.bingo-result { text-align: center; font-size: 24px; font-weight: bold; color: #d63031; margin-top: 20px; }
+.map-placeholder { width: 100%; height: 300px; background: #e9ecef; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #6c757d; font-weight: bold; border: 2px dashed #ced4da; }
