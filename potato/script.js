@@ -1,4 +1,4 @@
-// 1. 유저 제공 안내장 이미지 기준 29개 동아리 + 본부부스 전체 원본 데이터셋
+// 1. 이미지 기준 전체 동아리 데이터셋 (총 29개 + 본부부스)
 const boothData = [
     { id: 1, name: "도서부", category: "보건 의료 도서 방송", loc: "이동수업실 3" },
     { id: 2, name: "방송부", category: "보건 의료 도서 방송", loc: "이동수업실 2" },
@@ -32,12 +32,12 @@ const boothData = [
     { id: 30, name: "본부부스", category: "본부", loc: "본관 2층 (201/202강의실)" }
 ];
 
-// 2. 가이드라인 제공 3x3 빙고판 고정 레이아웃 구조체 정의
+// 2. 3x3 빙고판 레이아웃 정의 (오타 완벽 교정 완료!)
 const bingoLayout = [
     { type: "fixed", label: "과학", targetCategory: "과학", req: true },
     { type: "fixed", label: "사회", targetCategory: "사회 경제 언론", req: true },
     { type: "fixed", label: "예체능", targetCategory: "예체능", req: true },
-    { type: "fixed", label: "교육·수학<br>진로·건축", targetCategory: "Inter", targetCategory: "교육 수학 진로 건축", req: true },
+    { type: "fixed", label: "교육·수학<br>진로·건축", targetCategory: "교육 수학 진로 건축", req: true },
     { type: "free", label: "자율", req: false },
     { type: "free", label: "자율", req: false },
     { type: "fixed", label: "보건·의료<br>도서·방송", targetCategory: "보건 의료 도서 방송", req: true },
@@ -45,31 +45,46 @@ const bingoLayout = [
     { type: "free", label: "자율", req: false }
 ];
 
-// 로그인 핵심 유틸리티
+// 로그인 처리 함수
 function login() {
     const id = document.getElementById('studentId').value;
     const name = document.getElementById('studentName').value;
-    if (!id.trim() || !name.trim()) { alert("학번과 이름을 입력해주세요!"); return; }
+    if (!id.trim() || !name.trim()) { 
+        alert("학번과 이름을 입력해주세요!"); 
+        return; 
+    }
     localStorage.setItem("studentId", id);
     localStorage.setItem("studentName", name);
     window.location.href = "main.html";
 }
+
+// 로그인 여부 확인 및 UI 표시
 function checkLoginAndDisplay() {
     const id = localStorage.getItem("studentId");
     const name = localStorage.getItem("studentName");
-    if (!id || !name) window.location.href = "index.html";
-    else document.getElementById("userInfo").innerText = `${id} ${name}`;
+    if (!id || !name) {
+        window.location.href = "index.html";
+    } else {
+        const userInfoEl = document.getElementById("userInfo");
+        if (userInfoEl) userInfoEl.innerText = `${id} ${name}`;
+    }
 }
-function openPage(url) { window.open(url, '_blank'); }
 
-// --- 부스 리스트 렌더링 세션 ---
+// 단순 페이지 이동 유틸리티
+function openPage(url) { 
+    window.location.href = url; 
+}
+
+// --- 부스 안내 페이지 제어 ---
 let boothFilter = 'all';
 function renderBooths(filter) {
     boothFilter = filter;
     const container = document.getElementById('boothContainer');
-    if(!container) return;
+    if (!container) return;
+    
     const favList = JSON.parse(localStorage.getItem("favBooths") || "[]");
     container.innerHTML = "";
+    
     const list = filter === 'all' ? boothData : boothData.filter(b => favList.includes(b.id));
 
     list.forEach(booth => {
@@ -79,26 +94,30 @@ function renderBooths(filter) {
         item.innerHTML = `
             <div class="booth-info">
                 <h3>[${booth.name}] <span style="font-size:11px; color:#aaa;">(${booth.category})</span></h3>
-                <span class="loc"> 위치: ${booth.loc}</span>
+                <span class="loc">📍 위치: ${booth.loc}</span>
             </div>
             <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${booth.id})">★</button>
         `;
         container.appendChild(item);
     });
 }
+
 function toggleFavorite(id) {
     let fav = JSON.parse(localStorage.getItem("favBooths") || "[]");
     fav = fav.includes(id) ? fav.filter(i => i !== id) : [...fav, id];
     localStorage.setItem("favBooths", JSON.stringify(fav));
     renderBooths(boothFilter);
 }
+
 function changeTab(tab) {
-    document.getElementById('btnAll').classList.toggle('active', tab === 'all');
-    document.getElementById('btnFav').classList.toggle('active', tab === 'fav');
+    const btnAll = document.getElementById('btnAll');
+    const btnFav = document.getElementById('btnFav');
+    if (btnAll) btnAll.classList.toggle('active', tab === 'all');
+    if (btnFav) btnFav.classList.toggle('active', tab === 'fav');
     renderBooths(tab);
 }
 
-// --- 중복 배제 연동 스탬프 알고리즘 세션 ---
+// --- 스탬프 투어 & 3x3 빙고 렌더링 ---
 function renderBingo() {
     const board = document.getElementById('bingoBoard');
     if (!board) return;
@@ -107,20 +126,23 @@ function renderBingo() {
     board.innerHTML = "";
     let pool = [...visitedIds];
 
-    // 1패스: 고정 필수 카테고리 매칭 선점
+    // 1패스: 필수 칸 먼저 알맞은 카테고리 선점 매칭
     const midState = bingoLayout.map(cell => {
         if (cell.type === "fixed") {
-            const hit = pool.find(id => boothData.find(b => b.id === id)?.category === cell.targetCategory);
+            const hit = pool.find(id => {
+                const b = boothData.find(item => item.id === id);
+                return b && b.category === cell.targetCategory;
+            });
             if (hit) {
-                pool = pool.filter(id => id !== hit);
+                pool = pool.filter(id => id !== hit); // 사용된 부스는 중복 차단하기 위해 풀에서 제거
                 return { active: true, label: cell.label };
             }
             return { active: false, label: cell.label };
         }
-        return { freeSlot: true };
+        return { freeSlot: true }; // 자율칸용 마커
     });
 
-    // 2패스: 잔여 수집 도장 자율 칸 순차 할당
+    // 2패스: 남은 도장들을 자율(Free) 칸에 차례로 뿌리기
     const finalState = midState.map(cell => {
         if (cell.freeSlot) {
             if (pool.length > 0) {
@@ -133,7 +155,7 @@ function renderBingo() {
         return cell;
     });
 
-    // 화면 렌더링 및 엘리먼트 배치
+    // 빙고 셀 그리기
     finalState.forEach((cell, idx) => {
         const div = document.createElement('div');
         div.className = `bingo-cell ${cell.active ? 'active' : ''}`;
@@ -142,7 +164,7 @@ function renderBingo() {
         board.appendChild(div);
     });
 
-    // 빙고 통계 산출
+    // 빙고 계산
     const mask = finalState.map(c => c.active);
     let bingoCount = 0;
     if (mask[0] && mask[1] && mask[2]) bingoCount++;
@@ -154,35 +176,45 @@ function renderBingo() {
     if (mask[0] && mask[4] && mask[8]) bingoCount++;
     if (mask[2] && mask[4] && mask[6]) bingoCount++;
 
-    document.getElementById('bingoResult').innerText = `현재 ${bingoCount} 빙고! 🎉`;
+    const resultEl = document.getElementById('bingoResult');
+    if (resultEl) resultEl.innerText = `현재 ${bingoCount} 빙고! 🎉`;
 
     // 3빙고 달성 가이드라인 매칭 활성화
     const submitArea = document.getElementById('submitArea');
-    if (submitArea) submitArea.style.display = bingoCount >= 3 ? "block" : "none";
+    if (submitArea) {
+        submitArea.style.display = bingoCount >= 3 ? "block" : "none";
+    }
 }
 
-// 최종 팝업 인증
+// 3빙고 완성 인증 및 팝업 안내
 function submitBingo() {
     const id = localStorage.getItem("studentId");
     const name = localStorage.getItem("studentName");
     alert(`[3빙고 완성 인증 성공]\n\n학번: ${id}\n이름: ${name}\n\n성공 확인 패스가 발급되었습니다!\n이 안내창 화면을 캡처하여 본관 2층 본부 부스로 방문 후 확인받으세요!`);
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.style.backgroundColor = "#7f8c8d"; btn.innerText = "✅ 제출 및 인증 완료";
+    if (btn) {
+        btn.disabled = true; 
+        btn.style.backgroundColor = "#7f8c8d"; 
+        btn.innerText = "✅ 제출 및 인증 완료";
+    }
 }
 
-// QR 스캐너 드라이버
+// QR 스캐너 연동 제어
 let html5QrcodeScanner;
 function startQRScanner() {
-    document.getElementById('reader').style.display = "block";
+    const readerDiv = document.getElementById('reader');
+    if (readerDiv) readerDiv.style.display = "block";
     html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 }
+
 function onScanSuccess(txt) {
     const p = new URLSearchParams(txt.split('?')[1]);
     let bId = parseInt(p.get('booth') || txt);
 
     if (isNaN(bId) || bId < 1 || bId > boothData.length) {
-        alert("올바르지 않은 축제 전용 QR 코드 마크입니다."); return;
+        alert("올바르지 않은 축제용 QR 코드입니다."); 
+        return;
     }
 
     const b = boothData.find(item => item.id === bId);
@@ -195,8 +227,14 @@ function onScanSuccess(txt) {
         localStorage.setItem("myStamps", JSON.stringify(stamps));
         alert(`🎉 [${b.name}] 도장 획득 성공!\n분류: ${b.category}`);
     }
-    html5QrcodeScanner.clear();
-    document.getElementById('reader').style.display = "none";
+    
+    if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear();
+    }
+    const readerDiv = document.getElementById('reader');
+    if (readerDiv) readerDiv.style.display = "none";
+    
     renderBingo();
 }
+
 function onScanFailure(e) {}
